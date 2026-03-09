@@ -1,0 +1,34 @@
+.box-containers {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-around; /* Το έκανα around για καλύτερο spacing */
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+}
+
+.box {
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    padding: 20px;
+    width: 23%; /* Για 4 κουτιά στη σειρά */
+    min-width: 250px; /* Για να μην γίνονται πολύ μικρά */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.box h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.box p {
+    font-size: 1rem;
+    color: #666;
+}

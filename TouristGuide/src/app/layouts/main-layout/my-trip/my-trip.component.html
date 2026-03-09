@@ -1,0 +1,90 @@
+<div class="my-trip-container">
+
+  <div class="search-section">
+    <div class="search-content">
+      <h2>Σχεδιασμός Ταξιδιού με AI 🤖</h2>
+      <p>Πού θέλετε να πάτε; Το AI θα ετοιμάσει το ιδανικό πλάνο για εσάς.</p>
+      
+      <div class="input-group">
+        <input 
+          type="text" 
+          [(ngModel)]="userQuery" 
+          placeholder="π.χ. 3 μέρες στο Ναύπλιο..."
+          (keyup.enter)="generateAiTrip()">
+        
+        <button class="btn-generate" (click)="generateAiTrip()" [disabled]="isLoading">
+          <span *ngIf="!isLoading">Δημιουργία</span>
+          <span *ngIf="isLoading">Σχεδιασμός...</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="nearby-proposals" *ngIf="nearbySuggestions.length > 0">
+    <h2 class="section-title">✨ Κοντινές Αποδράσεις (Από {{ userCity }})</h2>
+    
+    <div class="proposals-grid">
+      <div class="proposal-card" *ngFor="let item of nearbySuggestions">
+        <div class="card-img-container">
+          <img [src]="'https://picsum.photos/seed/' + encodeURIComponent(item.place) + '/500/300'" 
+               class="proposal-img" 
+               alt="{{ item.place }}">
+        </div>
+
+        <div class="proposal-content">
+          <h4>{{ item.place }}</h4>
+          <span class="distance-badge">📍 {{ item.distance }}</span>
+          <p>{{ item.reason }}</p>
+        </div>
+
+        <div class="card-actions">
+          <button class="btn-select" (click)="selectSuggestion(item.place)" [disabled]="isLoading">
+            Πρόγραμμα
+          </button>
+          
+          <a [href]="'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(item.place)" 
+             target="_blank" 
+             class="btn-maps">
+             🚗 Οδηγίες
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" *ngIf="tripResult" (click)="tripResult = null">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="tripResult = null">×</button>
+      
+      <div class="modal-header-img">
+        <img [src]="'https://picsum.photos/seed/' + encodeURIComponent(tripResult.location || tripResult.title) + '/800/400'" class="header-img">
+        <div class="header-overlay">
+          <h1>{{ tripResult.title }}</h1>
+          <p>📍 {{ tripResult.location }}</p>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div class="itinerary-scroll">
+          <div class="day-row" *ngFor="let day of tripResult.days">
+            <div class="day-number">Ημέρα {{ day.day }}</div>
+            <div class="day-details">
+              <ul class="activities-list">
+                <li *ngFor="let activity of day.activities">{{ activity }}</li>
+              </ul>
+              <div class="day-tips" *ngIf="day.tips">
+                <strong>💡 Tip:</strong> {{ day.tips }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="loader-overlay" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Το AI ετοιμάζει το πρόγραμμά σας...</p>
+  </div>
+
+</div>

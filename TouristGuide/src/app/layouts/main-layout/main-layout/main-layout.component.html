@@ -1,0 +1,29 @@
+
+<nav class="navbar">
+    <div class="navbar-container">
+        <a routerLink="/user/userhome" class="navbar-logo">TouristGuide</a>    
+        <button class="navbar-toggle" [class.active]="menuOpen" (click)="toggleMenu()">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+        <ul class="navbar-menu" [class.active]="menuOpen">
+            <li><a routerLink="/user/my-trip">Το Ταξίδι σου</a></li>
+            <li><a routerLink="/user/costs">Εκτιμώμενο κόστος</a></li>
+            <li><a routerLink="/user/reviews">Κριτικές-Προτάσεις</a></li>
+            <li><a routerLink="/user/map">Διαδρομή/Χρόνος</a></li>
+            
+            <div class="user-menu" (click)="toggleDropMenu()" tabindex="0">
+                <i class="fas fa-user-circle fa-2x"></i>
+                <ul class="dropdownmenu" *ngIf="dropdownOpen">
+                    <li><a routerLink="/user/history">Ιστορικό</a></li>
+                    <li><a (click)="logout()" style="cursor: pointer;">Αποσύνδεση</a></li>
+                </ul>
+            </div>
+        </ul>
+    </div>
+</nav>
+
+<div class="main-content">
+    <router-outlet></router-outlet>
+</div>

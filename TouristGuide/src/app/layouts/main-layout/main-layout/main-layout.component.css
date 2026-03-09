@@ -1,0 +1,112 @@
+/* Navbar Styles */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 70px;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    background: white; /* Άλλαξέ το από transparent για να μην μπλέκονται τα γράμματα */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    z-index: 999;
+    border-radius: 10px;
+}
+
+.navbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 2rem;
+    max-width: 1600px;
+}
+
+.navbar-logo {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #6b6363;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.navbar-menu {
+    display: flex;
+    text-align: center;
+    gap: 1.5rem;
+    list-style: none;
+}
+
+.navbar-menu li a {
+    text-decoration: none;
+    color: #6b6363;
+    font-size: 1.3rem;
+    font-weight: 500;
+    padding: 3px 20px;
+    border-radius: 20px;
+    border: 2px solid transparent;
+    transition: all 0.7s ease;
+    white-space: nowrap;
+}
+
+.navbar-menu li a:hover {
+    color: #162530;
+    background: rgba(188, 212, 229, 0.8);
+    border: 2px solid #6b6363;
+}
+
+/* User & Dropdown */
+.user-menu {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    margin-left: 1rem;
+}
+
+.dropdownmenu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #e8eef0;
+    list-style: none;
+    padding: 10px;
+    margin: 5px 0 0 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    min-width: 150px;
+    z-index: 1000;
+}
+
+.dropdownmenu li a {
+    color: #333 !important;
+    background: none !important;
+    border: none !important;
+}
+
+/* Media Queries (τα αφήνεις εδώ για το mobile menu) */
+@media (max-width: 880px) {
+    .navbar-menu {
+        display: none !important;
+        flex-direction: column;
+        position: absolute;
+        height: 100vh;
+        width: 250px;
+        top: 0;
+        right: 0;
+        background: white;
+        padding: 5rem 1.5rem;
+    }
+    .navbar-menu.active {
+        display: flex !important;
+    }
+    .navbar-toggle {
+        display: block;
+    }
+}
+
+/* Κεντρικό Container για τα παιδιά */
+.main-content {
+    padding: 20px;
+    min-height: calc(100vh - 70px);
+}

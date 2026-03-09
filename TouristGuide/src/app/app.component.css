@@ -1,0 +1,6 @@
+body{
+    font-family:"Jost", serif;
+    min-height: 100vh;
+    background: url(./background.jpg ) no-repeat
+    center center/cover;
+}
