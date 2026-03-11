@@ -17,7 +17,7 @@ import { MyTripComponent } from './layouts/main-layout/my-trip/my-trip.component
 import { CostsComponent } from './layouts/main-layout/costs/costs.component';
 import { ReviewsComponent } from './layouts/main-layout/reviews/reviews.component';
 import { MapComponent } from './layouts/main-layout/map/map.component';
-
+import { HistoryComponent} from './layouts/main-layout/history/history.component';
 // Guard
 import { authGuard } from './auth.guard';
 
@@ -40,17 +40,17 @@ const routes: Routes = [
 {
   path:'user', 
   component:MainLayoutComponent,
-  canActivate: [authGuard], // Προστασία με Token
+  canActivate: [authGuard],
   children:[
     { path: 'userhome', component:UserhomeComponent},
     { path: 'my-trip', component: MyTripComponent },
     { path: 'costs', component: CostsComponent },
     { path: 'reviews', component: ReviewsComponent },
     { path: 'map', component: MapComponent },
+    { path: 'history', component: HistoryComponent }, // <-- ΜΟΝΟ ΑΥΤΗ Η ΠΡΟΣΘΗΚΗ
     { path: '', redirectTo: 'userhome', pathMatch: 'full' }
   ]
 },
-
 { path: '**', redirectTo: '' } // Redirect αν γραφτεί λάθος URL
 
 ];

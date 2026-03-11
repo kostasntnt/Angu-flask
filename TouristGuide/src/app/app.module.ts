@@ -17,6 +17,10 @@ import { MyTripComponent } from './layouts/main-layout/my-trip/my-trip.component
 import { CostsComponent } from './layouts/main-layout/costs/costs.component';
 import { ReviewsComponent } from './layouts/main-layout/reviews/reviews.component';
 import { MapComponent } from './layouts/main-layout/map/map.component';
+import { HistoryComponent } from './layouts/main-layout/history/history.component';
+
+
+
 
 @NgModule({
   declarations: [
@@ -32,7 +36,10 @@ import { MapComponent } from './layouts/main-layout/map/map.component';
     MyTripComponent,
     CostsComponent,
     ReviewsComponent,
-    MapComponent 
+    MapComponent,
+    HistoryComponent,
+
+
   ],
   imports: [
     BrowserModule,

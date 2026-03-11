@@ -1,1 +1,88 @@
-<p>map works!</p>
+<div class="custom-trip-wrapper">
+  <div class="ai-control-panel shadow-lg">
+    <div class="panel-header">
+      <h3>AI Travel Planner</h3>
+      <p>Σχεδιάστε το επόμενο ταξίδι σας σε δευτερόλεπτα</p>
+    </div>
+
+    <div class="input-group mt-4">
+      <label>Ποιος είναι ο προορισμός;</label>
+      <input type="text" [(ngModel)]="destination" placeholder="π.χ. Χανιά, Κρήτη">
+    </div>
+
+    <div class="row-params mt-3">
+      <div class="param-item">
+        <label>Διάρκεια (Ημέρες)</label>
+        <div class="days-selector">
+          <button [class.active]="duration === 1 && !isLongTrip" (click)="setDuration(1)">1</button>
+          <button [class.active]="duration === 2 && !isLongTrip" (click)="setDuration(2)">2</button>
+          <button [class.active]="duration === 3 && !isLongTrip" (click)="setDuration(3)">3</button>
+          <button [class.active]="duration === 4 && !isLongTrip" (click)="setDuration(4)">4</button>
+          <button [class.active]="isLongTrip" (click)="enableLongTrip()">5+</button>
+        </div>
+        <input *ngIf="isLongTrip" type="number" class="custom-input mt-2" [(ngModel)]="duration" min="5">
+      </div>
+
+      <div class="param-item">
+        <label>Εποχή</label>
+        <div class="season-toggle">
+          <button [class.active]="season === 'summer'" (click)="season = 'summer'">☀️</button>
+          <button [class.active]="season === 'winter'" (click)="season = 'winter'">❄️</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mood-section mt-4">
+      <label>Τι αναζητάτε;</label>
+      <div class="mood-grid">
+        <div class="mood-card" [class.active]="prefs.culture" (click)="prefs.culture = !prefs.culture">🏛️ Πολιτισμό</div>
+        <div class="mood-card" [class.active]="prefs.nature" (click)="prefs.nature = !prefs.nature">🌲 Φύση</div>
+        <div class="mood-card" [class.active]="prefs.fun" (click)="prefs.fun = !prefs.fun">🎉 Διασκέδαση</div>
+        <div class="mood-card" [class.active]="prefs.relax" (click)="prefs.relax = !prefs.relax">🧘 Χαλάρωση</div>
+      </div>
+    </div>
+
+    <button class="btn-create-itinerary mt-4" (click)="generateCustomTrip()" [disabled]="isLoading">
+      <span *ngIf="!isLoading">Δημιουργία Προγράμματος</span>
+      <span *ngIf="isLoading" class="spinner-border spinner-border-sm"></span>
+    </button>
+  </div>
+
+  <div *ngIf="tripResult" class="modal-overlay">
+    <div class="modal-content shadow-2xl">
+      <div class="modal-header">
+        <div>
+          <h2>{{ tripResult.title }}</h2>
+          <p class="loc-sub"><i class="bi bi-geo-alt"></i> {{ tripResult.location }}</p>
+        </div>
+        <button class="close-x" (click)="tripResult = null">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div *ngFor="let day of tripResult.days" class="itinerary-day">
+          <span class="day-badge">Ημέρα {{ day.day }}</span>
+          <ul class="activity-list">
+            <li *ngFor="let act of day.activities">
+              {{ getActivityText(act) }}
+            </li>
+          </ul>
+          <div *ngIf="day.tips" class="day-tips">
+            <strong>💡 Pro Tip:</strong> {{ day.tips }}
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-save-fav" (click)="saveTrip()">
+          <span *ngIf="tripResult.is_favorite">❤️ Αφαίρεση από Αγαπημένα</span>
+          <span *ngIf="!tripResult.is_favorite">🤍 Αποθήκευση στα Αγαπημένα</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loader-overlay">
+    <div class="spinner"></div>
+    <p class="mt-3 fw-bold">Ο AI ετοιμάζει το πρόγραμμά σας...</p>
+  </div>
+</div>

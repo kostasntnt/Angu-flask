@@ -10,10 +10,7 @@ export class MyTripComponent implements OnInit {
   userQuery: string = '';
   tripResult: any = null;
   nearbySuggestions: any[] = [];
-  
-  // Αυτή η μεταβλητή πρέπει να συμφωνεί με το HTML
   userCity: string = ''; 
-  
   isLoading: boolean = false;
   isLoadingNearby: boolean = false;
 
@@ -25,20 +22,13 @@ export class MyTripComponent implements OnInit {
 
   loadNearbyProposals() {
     this.isLoadingNearby = true;
-    
-    // 1. Λήψη συντεταγμένων από τον Browser
     this.travelService.getCurrentLocation()
       .then(coords => {
-        console.log("Browser Coordinates:", coords);
-        
-        // 2. Αποστολή στον Flask
         this.travelService.getNearbyRecommendations(coords.lat, coords.lng)
           .subscribe({
             next: (res: any) => {
-              console.log("Flask Response:", res);
-              // Εδώ παίρνουμε τα δεδομένα από το JSON του Flask
               this.nearbySuggestions = res.suggestions;
-              this.userCity = res.user_city; // Ενημέρωση της πόλης
+              this.userCity = res.user_city;
               this.isLoadingNearby = false;
             },
             error: (err) => {
@@ -71,7 +61,29 @@ export class MyTripComponent implements OnInit {
     });
   }
 
-  // Για τα Google Maps Links και τα Image URLs
+  // ΝΕΑ ΜΕΘΟΔΟΣ ΓΙΑ ΤΟ TOGGLE FAVORITE
+  saveTrip() {
+    if (!this.tripResult || !this.tripResult._id) {
+      alert('Σφάλμα: Δεν βρέθηκε το ID του ταξιδιού.');
+      return;
+    }
+
+    this.travelService.toggleFavorite(this.tripResult._id).subscribe({
+      next: (response: any) => {
+        this.tripResult.is_favorite = response.is_favorite;
+        if (response.is_favorite) {
+          alert('Προστέθηκε στα αγαπημένα! ❤️');
+        } else {
+          alert('Αφαιρέθηκε από τα αγαπημένα.');
+        }
+      },
+      error: (err) => {
+        console.error('Toggle favorite error:', err);
+        alert('Πρόβλημα κατά την αποθήκευση.');
+      }
+    });
+  }
+
   encodeURIComponent(url: string): string {
     return window.encodeURIComponent(url);
   }

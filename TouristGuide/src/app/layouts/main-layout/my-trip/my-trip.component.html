@@ -42,7 +42,7 @@
             Πρόγραμμα
           </button>
           
-          <a [href]="'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(item.place)" 
+          <a [href]="'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(item.place)" 
              target="_blank" 
              class="btn-maps">
              🚗 Οδηγίες
@@ -78,6 +78,14 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="modal-footer" style="padding: 20px; border-top: 1px solid #eee; display: flex; justify-content: center;">
+        <button (click)="saveTrip()" 
+                style="padding: 12px 25px; border-radius: 30px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; background: #f8f9fa; border: 1px solid #ddd;">
+          <span *ngIf="tripResult.is_favorite">❤️ Αφαιρέση από Αγαπημένα</span>
+          <span *ngIf="!tripResult.is_favorite">🤍 Αποθήκευση στα Αγαπημένα</span>
+        </button>
       </div>
     </div>
   </div>

@@ -1,0 +1,53 @@
+<div class="history-wrapper">
+  <div class="header-section">
+    <h1><i class="bi bi-journal-album"></i> Το Ταξιδιωτικό μου Ημερολόγιο</h1>
+    <div class="filter-tabs">
+      <button [class.active]="activeTab === 'all'" (click)='setTab("all")'>Όλα</button>
+      <button [class.active]="activeTab === 'favs'" (click)='setTab("favs")'>❤️ Αγαπημένα</button>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loader-container">
+    <div class="spinner-border text-primary"></div>
+    <p>Αναζήτηση στις αναμνήσεις σας...</p>
+  </div>
+
+  <div class="no-trips" *ngIf="!isLoading && filteredTrips.length === 0">
+    <p>Δεν βρέθηκαν ταξίδια εδώ. Ξεκινήστε μια νέα περιπέτεια!</p>
+  </div>
+
+  <div class="trips-grid" *ngIf="!isLoading">
+    <div class="trip-card" *ngFor="let trip of filteredTrips" (click)="viewDetails(trip)">
+      <div class="card-header">
+        <span class="date-tag">{{ trip?.created_at?.slice(0,10) }}</span>
+        <button class="fav-icon-btn" (click)="toggleFavorite(trip, $event)">
+          <span>{{ trip?.is_favorite ? '❤️' : '🤍' }}</span>
+        </button>
+      </div>
+      <div class="card-body">
+        <h3>{{ trip?.location }}</h3>
+        <p class="days-count">🗓️ {{ trip?.days_count }} ημέρες</p>
+      </div>
+      <div class="card-footer">
+        <span>Προβολή Προγράμματος ➔</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" *ngIf="selectedTrip" (click)="closeModal()">
+    <div class="modal-main" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ selectedTrip?.trip_data?.title }}</h2>
+        <button class="close-btn" (click)="closeModal()">&times;</button>
+      </div>
+      <div class="modal-content-scroll">
+        <div class="day-block" *ngFor="let day of selectedTrip?.trip_data?.days">
+          <h4>Ημέρα {{ day?.day }}</h4>
+          <ul>
+            <li *ngFor="let act of day?.activities">{{ act }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
