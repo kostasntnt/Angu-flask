@@ -20,9 +20,14 @@
     <div class="trip-card" *ngFor="let trip of filteredTrips" (click)="viewDetails(trip)">
       <div class="card-header">
         <span class="date-tag">{{ trip?.created_at?.slice(0,10) }}</span>
-        <button class="fav-icon-btn" (click)="toggleFavorite(trip, $event)">
-          <span>{{ trip?.is_favorite ? '❤️' : '🤍' }}</span>
-        </button>
+        <div class="card-actions">
+          <button class="action-btn fav-btn" (click)="toggleFavorite(trip, $event)">
+            <span>{{ trip?.is_favorite ? '❤️' : '🤍' }}</span>
+          </button>
+          <button class="action-btn delete-btn" (click)="deleteTrip(trip, $event)">
+            🗑️
+          </button>
+        </div>
       </div>
       <div class="card-body">
         <h3>{{ trip?.location }}</h3>
@@ -37,14 +42,25 @@
   <div class="modal-backdrop" *ngIf="selectedTrip" (click)="closeModal()">
     <div class="modal-main" (click)="$event.stopPropagation()">
       <div class="modal-header">
-        <h2>{{ selectedTrip?.trip_data?.title }}</h2>
+        <div>
+          <h2>{{ selectedTrip?.trip_data?.title }}</h2>
+          <p class="loc-sub">📍 {{ selectedTrip?.location }}</p>
+        </div>
         <button class="close-btn" (click)="closeModal()">&times;</button>
       </div>
       <div class="modal-content-scroll">
         <div class="day-block" *ngFor="let day of selectedTrip?.trip_data?.days">
           <h4>Ημέρα {{ day?.day }}</h4>
-          <ul>
-            <li *ngFor="let act of day?.activities">{{ act }}</li>
+          <ul class="activity-list">
+            <li *ngFor="let act of day?.activities" class="history-activity-item">
+              <span>{{ act }}</span>
+              <a [href]="'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(act + ' ' + selectedTrip?.location)" 
+                 target="_blank" 
+                 class="btn-map-link"
+                 title="Οδηγίες στους Χάρτες">
+                 <span class="map-emoji">📍</span>
+              </a>
+            </li>
           </ul>
         </div>
       </div>

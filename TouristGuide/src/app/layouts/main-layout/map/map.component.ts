@@ -13,7 +13,7 @@ export class MapComponent {
   isLongTrip: boolean = false;
   isLoading: boolean = false;
   tripResult: any = null;
-
+  encodeURIComponent = window.encodeURIComponent; 
   prefs = {
     culture: false,
     nature: false,

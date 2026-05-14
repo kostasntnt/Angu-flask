@@ -9,7 +9,7 @@ import { TravelService } from '../../../services/travel.service';
 export class MyTripComponent implements OnInit {
   userQuery: string = '';
   tripResult: any = null;
-  nearbySuggestions: any[] = [];
+  nearbySuggestions: any[] = []; // Αρχικοποίηση ως άδεια λίστα
   userCity: string = ''; 
   isLoading: boolean = false;
   isLoadingNearby: boolean = false;
@@ -27,20 +27,23 @@ export class MyTripComponent implements OnInit {
         this.travelService.getNearbyRecommendations(coords.lat, coords.lng)
           .subscribe({
             next: (res: any) => {
-              this.nearbySuggestions = res.suggestions;
-              this.userCity = res.user_city;
+              // ΔΙΟΡΘΩΣΗ: Χρήση του σωστού κλειδιού 'nearbySuggestions' από το Flask
+              this.nearbySuggestions = res.nearbySuggestions || [];
+              this.userCity = res.user_city || 'Ελλάδα';
               this.isLoadingNearby = false;
             },
             error: (err) => {
               console.error("Flask Error:", err);
+              this.nearbySuggestions = []; // Ασφάλεια για να μη σκάσει το length
               this.isLoadingNearby = false;
             }
           });
       })
       .catch(err => {
         console.error("Geolocation failed:", err);
-        this.userCity = "Πρέβεζα (Προεπιλογή)";
+        this.userCity = "Αθήνα";
         this.isLoadingNearby = false;
+        this.nearbySuggestions = [];
       });
   }
 
@@ -51,6 +54,10 @@ export class MyTripComponent implements OnInit {
 
     this.travelService.generateTrip(this.userQuery).subscribe({
       next: (data: any) => {
+        // Διασφάλιση ότι οι μέρες υπάρχουν
+        if (data && !data.days) {
+          data.days = [];
+        }
         this.tripResult = data;
         this.isLoading = false;
       },
@@ -61,7 +68,6 @@ export class MyTripComponent implements OnInit {
     });
   }
 
-  // ΝΕΑ ΜΕΘΟΔΟΣ ΓΙΑ ΤΟ TOGGLE FAVORITE
   saveTrip() {
     if (!this.tripResult || !this.tripResult._id) {
       alert('Σφάλμα: Δεν βρέθηκε το ID του ταξιδιού.');

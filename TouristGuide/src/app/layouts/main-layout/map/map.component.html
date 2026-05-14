@@ -62,8 +62,15 @@
         <div *ngFor="let day of tripResult.days" class="itinerary-day">
           <span class="day-badge">Ημέρα {{ day.day }}</span>
           <ul class="activity-list">
-            <li *ngFor="let act of day.activities">
-              {{ getActivityText(act) }}
+            <li *ngFor="let act of day.activities" class="d-flex justify-content-between align-items-center mb-2">
+              <span>{{ getActivityText(act) }}</span>
+    
+              <a [href]="'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(getActivityText(act) + ' ' + tripResult.location)" 
+                target="_blank" 
+                class="btn-map-link"
+                title="Οδηγίες στους Χάρτες">
+                <span class="map-emoji">📍</span>
+              </a>
             </li>
           </ul>
           <div *ngIf="day.tips" class="day-tips">

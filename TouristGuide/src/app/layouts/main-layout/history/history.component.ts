@@ -13,6 +13,9 @@ export class HistoryComponent implements OnInit {
   activeTab: 'all' | 'favs' = 'all';
   selectedTrip: any = null;
 
+  // Ορισμός του helper για το HTML
+  encodeURIComponent = window.encodeURIComponent;
+
   constructor(private travelService: TravelService) {}
 
   ngOnInit(): void {
@@ -48,7 +51,7 @@ export class HistoryComponent implements OnInit {
   }
 
   toggleFavorite(trip: any, event: Event) {
-    event.stopPropagation(); // Για να μην ανοίξει το modal όταν πατάμε την καρδιά
+    event.stopPropagation();
     this.travelService.toggleFavorite(trip._id).subscribe({
       next: (res: any) => {
         trip.is_favorite = res.is_favorite;
@@ -63,5 +66,18 @@ export class HistoryComponent implements OnInit {
 
   closeModal() {
     this.selectedTrip = null;
+  }
+
+  deleteTrip(trip: any, event: Event) {
+    event.stopPropagation();
+    if (confirm('Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το ταξίδι;')) {
+      this.travelService.deleteTrip(trip._id).subscribe({
+        next: () => {
+          this.allTrips = this.allTrips.filter(t => t._id !== trip._id);
+          this.applyFilter();
+        },
+        error: (err) => console.error("Error deleting trip:", err)
+      });
+    }
   }
 }

@@ -65,4 +65,17 @@ export class TravelService {
       }
     });
   }
+  getCostEstimation(data: any): Observable<any> {
+  const headers = this.getHeaders(); // Χρήση του υπάρχοντος helper για το JWT
+  // Αφαιρούμε το /api/ αφού ο Flask δεν το αναγνωρίζει στο blueprint
+  return this.http.post(`${this.baseUrl}/calculate-costs`, data, { headers });
+}
+  deleteTrip(tripId: string) {
+  const token = localStorage.getItem('token');
+  return this.http.delete(`http://localhost:5000/delete-trip/${tripId}`, {
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+}
+
+
 }

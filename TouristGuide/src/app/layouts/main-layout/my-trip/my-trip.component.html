@@ -20,7 +20,7 @@
     </div>
   </div>
 
-  <div class="nearby-proposals" *ngIf="nearbySuggestions.length > 0">
+  <div class="nearby-proposals" *ngIf="nearbySuggestions && nearbySuggestions.length > 0">
     <h2 class="section-title">✨ Κοντινές Αποδράσεις (Από {{ userCity }})</h2>
     
     <div class="proposals-grid">
@@ -42,7 +42,7 @@
             Πρόγραμμα
           </button>
           
-          <a [href]="'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(item.place)" 
+          <a [href]="'https://www.google.com/maps/search/' + encodeURIComponent(item.place)" 
              target="_blank" 
              class="btn-maps">
              🚗 Οδηγίες
@@ -66,7 +66,7 @@
 
       <div class="modal-body">
         <div class="itinerary-scroll">
-          <div class="day-row" *ngFor="let day of tripResult.days">
+          <div class="day-row" *ngFor="let day of tripResult?.days">
             <div class="day-number">Ημέρα {{ day.day }}</div>
             <div class="day-details">
               <ul class="activities-list">

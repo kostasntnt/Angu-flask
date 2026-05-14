@@ -23,4 +23,6 @@ export class SignupService {
     // θα λύσει το TS7006 σφάλμα που είχαμε πριν
     return this.http.post(this.apiUrl, userData, { headers });
   }
+
+  
 }

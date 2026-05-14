@@ -12,6 +12,15 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
     
+# Πλήρης ρύθμιση CORS
+    # Το κλειδί εδώ είναι το 'expose_headers' ώστε η Angular να μπορεί να διαβάσει το Token αν χρειαστεί
+    CORS(app, 
+         resources={r"/*": {"origins": "http://localhost:4200"}}, 
+         supports_credentials=True,
+         allow_headers=["Content-Type", "Authorization"],
+         methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+         expose_headers=["Authorization"])
+
     # Απενεργοποίηση του strict_slashes για να μην έχουμε 301/404 redirects που σπάνε το CORS
     app.url_map.strict_slashes = False
 
@@ -23,13 +32,6 @@ def create_app():
     from .routes import routes as routes_blueprint
     app.register_blueprint(routes_blueprint)
 
-    # Πλήρης ρύθμιση CORS
-    # Το κλειδί εδώ είναι το 'expose_headers' ώστε η Angular να μπορεί να διαβάσει το Token αν χρειαστεί
-    CORS(app, 
-         resources={r"/*": {"origins": "http://localhost:4200"}}, 
-         supports_credentials=True,
-         allow_headers=["Content-Type", "Authorization"],
-         methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-         expose_headers=["Authorization"])
+    
 
     return app
