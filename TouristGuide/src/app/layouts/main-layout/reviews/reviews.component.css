@@ -1,0 +1,36 @@
+.row {
+    display: flex !important;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.col-lg-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding: 15px;
+}
+
+/* Για να μην χαλάει στο κινητό όμως: */
+@media (max-width: 991px) {
+    .col-lg-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+.x-small {
+    font-size: 0.75rem;
+}
+
+.animate__animated {
+    animation-duration: 0.4s;
+}
+
+.list-group-item {
+    border: none;
+}
+
+.card {
+    transition: all 0.3s ease;
+}

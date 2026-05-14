@@ -52,10 +52,10 @@
     <div class="col-lg-8" *ngIf="budgetResults">
       <div class="main-total-card text-white p-5 mb-4 shadow text-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px;">
         <h4 class="text-uppercase opacity-75">Συνολικό Κόστος Ταξιδιού</h4>
-        <h1 class="display-2 fw-bold">{{ budgetResults?.total }}€</h1>
+        <h1 class="display-2 fw-bold">{{ budgetResults.total }}€</h1>
         <div class="d-flex justify-content-center gap-4 mt-3 fs-5">
-          <span class="badge bg-white text-dark p-2" *ngIf="costData.days > 0">({{ (budgetResults?.total / costData.days) | number:'1.0-0' }}€ / ημέρα)</span>
-          <span class="badge bg-white text-dark p-2" *ngIf="costData.people > 0">{{ (budgetResults?.total / costData.people) | number:'1.0-0' }}€ / άτομο</span>
+          <span class="badge bg-white text-dark p-2">({{ (budgetResults.total / costData.days) | number:'1.0-0' }}€ / ημέρα)</span>
+          <span class="badge bg-white text-dark p-2">{{ (budgetResults.total / costData.people) | number:'1.0-0' }}€ / άτομο</span>
         </div>
       </div>
 
@@ -64,34 +64,34 @@
           <div class="detail-card p-4 shadow-sm bg-white h-100">
             <div class="icon-circle mb-3">🏨</div>
             <h5>Διαμονή</h5>
-            <h3 class="fw-bold">{{ budgetResults?.accommodation }}€</h3>
+            <h3 class="fw-bold">{{ budgetResults.accommodation }}€</h3>
           </div>
         </div>
 
         <div class="col-md-4">
-          <div class="detail-card p-4 shadow-sm bg-white h-100">
+        <div class="detail-card p-4 shadow-sm bg-white h-100">
             <div class="icon-circle bg-warning-subtle text-warning mb-3">⛽</div>
             <h5>Μεταφορικά</h5>
-            <h3 class="fw-bold">{{ budgetResults?.transport }}€</h3>
-            <div class="small mt-2" *ngIf="budgetResults?.transport_details">
-              <div class="d-flex justify-content-between text-muted">
-                <span>Απόσταση:</span> <span>{{ budgetResults?.distance_km }} χλμ</span>
-              </div>
-              <div class="d-flex justify-content-between">
-                <span>Βενζίνη:</span> <span>{{ budgetResults?.transport_details?.fuel }}€</span>
-              </div>
-              <div class="d-flex justify-content-between">
-                <span>Διόδια:</span> <span>{{ budgetResults?.transport_details?.tolls }}€</span>
-              </div>
+            <h3 class="fw-bold">{{ budgetResults.transport }}€</h3>
+            <div class="small mt-2">
+            <div class="d-flex justify-content-between text-muted">
+                <span>Απόσταση:</span> <span>{{ budgetResults.distance_km }} χλμ</span>
             </div>
-          </div>
+            <div class="d-flex justify-content-between">
+                <span>Βενζίνη:</span> <span>{{ budgetResults.transport_details.fuel }}€</span>
+            </div>
+            <div class="d-flex justify-content-between">
+                <span>Διόδια:</span> <span>{{ budgetResults.transport_details.tolls }}€</span>
+            </div>
+            </div>
+        </div>
         </div>
 
         <div class="col-md-4">
           <div class="detail-card p-4 shadow-sm bg-white h-100">
             <div class="icon-circle mb-3">🍴</div>
             <h5>Φαγητό & Έξοδα</h5>
-            <h3 class="fw-bold">{{ budgetResults?.daily_expenses }}€</h3>
+            <h3 class="fw-bold">{{ budgetResults.daily_expenses }}€</h3>
           </div>
         </div>
       </div>
@@ -99,13 +99,13 @@
       <div class="card shadow-sm border-0 mt-4 p-4">
         <h4 class="mb-4">Δραστηριότητες</h4>
         <table class="table">
-          <tr *ngFor="let attr of budgetResults?.attractions_list">
-            <td>{{ attr?.name }}</td>
-            <td class="text-end fw-bold">{{ attr?.price }}€</td>
+          <tr *ngFor="let attr of budgetResults.attractions_list">
+            <td>{{ attr.name }}</td>
+            <td class="text-end fw-bold">{{ attr.price }}€</td>
           </tr>
           <tr class="table-light">
             <td class="fw-bold">Σύνολο Δραστηριοτήτων</td>
-            <td class="text-end fw-bold">{{ budgetResults?.activities }}€</td>
+            <td class="text-end fw-bold">{{ budgetResults.activities }}€</td>
           </tr>
         </table>
       </div>

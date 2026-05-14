@@ -76,6 +76,9 @@ export class TravelService {
     headers: { 'Authorization': `Bearer ${token}` }
   });
 }
-
-
+  // Στο τέλος του TravelService class
+  getLocationReviews(location: string): Observable<any> {
+    const headers = this.getHeaders(); // Προσθήκη JWT αν χρειάζεται
+    return this.http.post(`${this.baseUrl}/get-location-reviews`, { location }, { headers });
+  }
 }

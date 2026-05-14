@@ -1,1 +1,107 @@
-<p>reviews works!</p>
+<div class="reviews-wrapper container py-5">
+  <div class="header-section text-center mb-5">
+    <h2 class="display-6 fw-bold text-dark">
+      <i class="bi bi-geo-fill text-primary"></i> Ταξιδιωτικές Κριτικές
+    </h2>
+    <p class="text-muted">Δείτε πληροφορίες και κριτικές απευθείας για κάθε προορισμό σας.</p>
+  </div>
+
+  <div class="row g-4" *ngIf="!isLoading; else loadingTpl">
+    
+    <div class="col-12 col-lg-6">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-dark text-white p-3">
+          <h5 class="mb-0 fw-bold"><i class="bi bi-clock-history me-2"></i> Ιστορικό Αναζητήσεων</h5>
+        </div>
+        
+        <div class="list-group list-group-flush">
+          <div *ngFor="let trip of historyTrips; let i = index" class="list-group-item p-0 border-0 mb-1">
+            <div class="d-flex justify-content-between align-items-center p-3 bg-white border-bottom">
+              <div>
+                <h6 class="mb-0 fw-bold text-dark">{{ trip.location }}</h6>
+                <small class="text-muted">{{ trip.created_at | date:'dd/MM/yy' }}</small>
+              </div>
+              <button 
+                class="btn btn-sm rounded-pill fw-bold" 
+                [ngClass]="activeTripId === 'hist' + i ? 'btn-danger' : 'btn-outline-primary'"
+                (click)="fetchLocationReviews(trip.location, 'hist' + i)">
+                <i class="bi" [ngClass]="activeTripId === 'hist' + i ? 'bi-x-lg' : 'bi-chat-left-text-fill me-1'"></i>
+                {{ activeTripId === 'hist' + i ? 'Κλείσιμο' : 'Κριτικές' }}
+              </button>
+            </div>
+
+            <div class="bg-light p-3 border-bottom animate__animated animate__fadeIn" *ngIf="activeTripId === 'hist' + i">
+              <div *ngIf="isFetchingReviews" class="text-center py-3">
+                <div class="spinner-border spinner-border-sm text-primary"></div>
+                <p class="small text-muted mt-2 mb-0">Αναζήτηση για {{ trip.location }}...</p>
+              </div>
+
+              <div *ngIf="!isFetchingReviews">
+                <div class="card border-0 shadow-sm mb-2" *ngFor="let item of locationData">
+                  <div class="card-body p-3 text-dark">
+                    <h6 class="fw-bold small mb-1">{{ item.title || item.name }}</h6>
+                    <p class="text-muted small mb-2" style="font-size: 0.85rem;">{{ item.snippet || item.description }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span class="badge bg-white text-primary border small">{{ item.source || 'Πηγή' }}</span>
+                      <a *ngIf="item.url" [href]="item.url" target="_blank" class="text-primary small text-decoration-none">Μετάβαση <i class="bi bi-box-arrow-up-right"></i></a>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="locationData.length === 0" class="text-center py-2 text-muted small">
+                  Δεν βρέθηκαν αποτελέσματα για τον προορισμό {{ trip.location }}.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-6">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-primary text-white p-3">
+          <h5 class="mb-0 fw-bold"><i class="bi bi-heart-fill me-2"></i> Αγαπημένα</h5>
+        </div>
+        
+        <div class="list-group list-group-flush">
+          <div *ngFor="let trip of favoriteTrips; let j = index" class="list-group-item p-0 border-0 mb-1">
+            <div class="d-flex justify-content-between align-items-center p-3 bg-white border-bottom">
+              <h6 class="mb-0 fw-bold text-dark">{{ trip.location }}</h6>
+              <button 
+                class="btn btn-sm rounded-pill fw-bold" 
+                [ngClass]="activeTripId === 'fav' + j ? 'btn-danger' : 'btn-primary'"
+                (click)="fetchLocationReviews(trip.location, 'fav' + j)">
+                {{ activeTripId === 'fav' + j ? 'Κλείσιμο' : 'Κριτικές' }}
+              </button>
+            </div>
+
+            <div class="bg-light p-3 border-bottom animate__animated animate__fadeIn" *ngIf="activeTripId === 'fav' + j">
+              <div *ngIf="isFetchingReviews" class="text-center py-3">
+                <div class="spinner-border spinner-border-sm text-primary"></div>
+              </div>
+              <div *ngIf="!isFetchingReviews">
+                <div class="card border-0 shadow-sm mb-2" *ngFor="let item of locationData">
+                  <div class="card-body p-3 text-dark">
+                    <h6 class="fw-bold small mb-1">{{ item.title || item.name }}</h6>
+                    <p class="text-muted small mb-0" style="font-size: 0.85rem;">{{ item.snippet || item.description }}</p>
+                  </div>
+                </div>
+                <div *ngIf="locationData.length === 0" class="text-center py-2 text-muted small">
+                   Δεν βρέθηκαν αποτελέσματα.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <ng-template #loadingTpl>
+    <div class="text-center py-5">
+      <div class="spinner-grow text-primary"></div>
+      <p class="mt-2 text-muted">Φόρτωση ταξιδιών...</p>
+    </div>
+  </ng-template>
+</div>

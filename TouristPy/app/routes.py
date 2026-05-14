@@ -254,3 +254,53 @@ def delete_trip(trip_id):
         db.trips.delete_one({"_id": ObjectId(trip_id), "username": get_jwt_identity()})
         return jsonify({"message": "Deleted"}), 200
     except: return jsonify({"error": "fail"}), 500
+
+
+import requests # Σιγουρέψου ότι υπάρχει στην κορυφή
+
+# --- 5. FETCH LOCATION REVIEWS (GOOGLE SEARCH API) ---
+@routes.route('/get-location-reviews', methods=['POST', 'OPTIONS'])
+def get_location_reviews():
+    if request.method == 'OPTIONS': 
+        return make_response("", 200)
+    
+    try:
+        data = request.get_json()
+        location = data.get('location', 'Athens')
+        
+        print(f"\n--- API CALL START (Google Search Master Mega) ---")
+        print(f"Searching for: {location}")
+
+        # Χρήση του /search endpoint γιατί το /reviews απαιτεί CID
+        url = "https://google-search-master-mega.p.rapidapi.com/search"
+        querystring = {"query": f"site:tripadvisor.com reviews {location}", "gl": "gr", "hl": "el"}
+        
+        headers = {
+            "x-rapidapi-key": os.getenv("RAPIDAPI_KEY"),
+            "x-rapidapi-host": "google-search-master-mega.p.rapidapi.com"
+        }
+
+        response = requests.get(url, headers=headers, params=querystring, timeout=10)
+        print(f"Status Code: {response.status_code}")
+
+        if response.status_code == 200:
+            api_data = response.json()
+            # Στέλνουμε τα αποτελέσματα (συνήθως στο κλειδί 'results' ή 'organic')
+            results = api_data.get('results', api_data.get('organic', []))
+            print(f"Success! Found {len(results)} results.")
+            return jsonify({"source": "api", "data": results}), 200
+        else:
+            print(f"API Error: {response.text}. Switching to AI Fallback...")
+            raise Exception("RapidAPI Subscription Error")
+
+    except Exception as e:
+        print(f"Falling back to AI due to: {str(e)}")
+        # FALLBACK ΣΤΟ AI ΓΙΑ ΝΑ ΜΗΝ ΜΕΙΝΕΙ ΑΔΕΙΟΣ Ο ΧΡΗΣΤΗΣ
+        prompt = f"Δώσε μου 3 ρεαλιστικές τουριστικές κριτικές για: {location}. JSON format: 'data' list with 'title', 'snippet', 'source' keys."
+        chat_completion = client.chat.completions.create(
+            messages=[{"role": "user", "content": prompt}],
+            model="llama-3.1-8b-instant",
+            response_format={"type": "json_object"}
+        )
+        ai_res = json.loads(chat_completion.choices[0].message.content)
+        return jsonify({"source": "ai", "data": ai_res.get('data', [])}), 200
