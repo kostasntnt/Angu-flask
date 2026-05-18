@@ -19,6 +19,8 @@ import { CostsComponent } from './layouts/main-layout/costs/costs.component';
 import { ReviewsComponent } from './layouts/main-layout/reviews/reviews.component';
 import { MapComponent } from './layouts/main-layout/map/map.component';
 import { HistoryComponent } from './layouts/main-layout/history/history.component';
+import { MycustomtripComponent } from './layouts/main-layout/mycustomtrip/mycustomtrip.component';
+
 
 
 
@@ -39,6 +41,7 @@ import { HistoryComponent } from './layouts/main-layout/history/history.componen
     ReviewsComponent,
     MapComponent,
     HistoryComponent,
+    MycustomtripComponent,
 
 
   ],

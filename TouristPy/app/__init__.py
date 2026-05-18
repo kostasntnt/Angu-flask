@@ -11,6 +11,8 @@ load_dotenv()
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+
+    app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50 Megabytes όριο
     
 # Πλήρης ρύθμιση CORS
     # Το κλειδί εδώ είναι το 'expose_headers' ώστε η Angular να μπορεί να διαβάσει το Token αν χρειαστεί

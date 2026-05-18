@@ -16,6 +16,13 @@ from flask_jwt_extended import (
     get_jwt_identity,
     jwt_required
 )
+import smtplib
+import base64
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email import encoders
+import requests
 
 load_dotenv()
 
@@ -304,3 +311,118 @@ def get_location_reviews():
         )
         ai_res = json.loads(chat_completion.choices[0].message.content)
         return jsonify({"source": "ai", "data": ai_res.get('data', [])}), 200
+    
+@routes.route('/save-sequential-trip', methods=['POST', 'OPTIONS'])
+def save_sequential_trip():
+    # 1. Χειρισμός του Preflight (CORS)
+    if request.method == 'OPTIONS': 
+        return make_response("", 200)
+    
+    # 2. Χειρισμός του κανονικού POST
+    try:
+        # Καλούμε το verify χειροκίνητα για αποφυγή CORS issues
+        verify_jwt_in_request() 
+        current_user = get_jwt_identity()
+        
+        data = request.get_json()
+
+        trip_title = data.get("title") or data.get("location") or "Προσαρμοσμένη Διαδρομή"
+        
+        trip_doc = {
+            "username": current_user,
+            "location": trip_title,
+            "steps": data.get("steps", []),
+            "total_distance": data.get("total_distance", 0),
+            "is_favorite": True,
+            "type": "sequential",
+            "created_at": datetime.utcnow()
+        }
+
+        result = db.trips.insert_one(trip_doc)
+        
+        return jsonify({
+            "message": "Trip saved successfully",
+            "trip_id": str(result.inserted_id)
+        }), 201
+
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
+    
+from flask_cors import cross_origin  # <--- Σιγουρέψου ότι αυτό είναι εισαγμένο (ή βάλτο στην κορυφή)
+
+# --- ΑΠΟΣΤΟΛΗ EMAIL ΜΕΣΩ BREVO SMTP (FORM DATA VERSION) ---
+@routes.route('/api/send-trip-email', methods=['POST'])
+def send_trip_email():
+    # Σημείωση: Αφαιρέθηκε το methods=['OPTIONS'], το @cross_origin και τα χειροκίνητα CORS headers.
+    # Το παγκόσμιο CORS(app) από το κεντρικό αρχείο αναλαμβάνει αυτόματα τα πάντα!
+
+    try:
+        # Διαβάζουμε τα δεδομένα από το FormData
+        user_email = request.form.get('email')
+        trip_location = request.form.get('location', 'Πλάνο Ταξιδιού')
+        
+        # Έλεγχος αν υπάρχει το αρχείο στο request
+        if 'file' not in request.files:
+            return jsonify({"error": "Λείπει το απαραίτητο αρχείο εικόνας."}), 400
+
+        image_file = request.files['file']
+        user_email = user_email.strip() if user_email else None
+
+        if not user_email:
+            return jsonify({"error": "Λείπει η διεύθυνση email."}), 400
+
+        # Διαβάζουμε απευθείας τα binary bytes της εικόνας
+        pdf_data = image_file.read()
+
+        # 1. Δημιουργία του MIME Πολυμεσικού Μηνύματος
+        sender_email = os.getenv("SMTP_SENDER")
+        msg = MIMEMultipart()
+        msg['From'] = f"Travel Journal <{sender_email}>"
+        msg['To'] = user_email
+        msg['Subject'] = f"Το Ταξιδιωτικό σας Πλάνο: {trip_location}"
+
+        body = f"""
+        <h3>Γεια σας!</h3>
+        <p>Σας στέλνουμε συνημμένο το πρόγραμμα του ταξιδιού σας για τον προορισμό: <strong>{trip_location}</strong>.</p>
+        <p>Καλή διασκέδαση,<br><em>Η ομάδα του Travel Journal</em></p>
+        """
+        msg.attach(MIMEText(body, 'html', 'utf-8'))
+
+        # 2. Δημιουργία του Συνημμένου Αρχείου (JPEG)
+        attachment = MIMEBase('image', 'jpeg')  
+        attachment.set_payload(pdf_data)
+        encoders.encode_base64(attachment)
+        
+        filename = f"Trip_{trip_location.replace(' ', '_')}.jpg"
+        attachment.add_header('Content-Disposition', f'attachment; filename="{filename}"')
+        msg.attach(attachment)
+
+        # 3. Ασφαλής Ανάγνωση των στοιχείων από το αρχείο .env
+        smtp_server = os.getenv("SMTP_SERVER", "smtp-relay.brevo.com")
+        port = int(os.getenv("SMTP_PORT", 587))
+        username = os.getenv("SMTP_USERNAME")
+        password = os.getenv("SMTP_PASSWORD")
+
+        # 🔍 ΠΡΟΣΘΗΚΗ DEBUG PRINTS (Εδώ μπαίνουν, ακριβώς πριν τη σύνδεση!)
+        #print("\n--- [DEBUG] ΕΛΕΓΧΟΣ ΣΤΟΙΧΕΙΩΝ SMTP ---")
+        #print(f"SMTP Server: {smtp_server} | Port: {port}")
+        #print(f"SMTP Username: {username}")
+        #print(f"SMTP Password (Μήκος χαρακτήρων): {len(password) if password else 'None/Δεν βρέθηκε'}")
+        #print(f"Ξεκινάει με xsmtpsib-; {'ΝΑΙ' if password and password.startswith('xsmtpsib-') else 'ΟΧΙ'}")
+        #print("--------------------------------------\n")
+        
+
+        # 4. Σύνδεση στον SMTP Server της Brevo και Αποστολή
+        server = smtplib.SMTP(smtp_server, port)
+        server.starttls()  
+        server.login(username, password)
+        server.sendmail(sender_email, user_email, msg.as_string())
+        server.quit()
+
+        return jsonify({"message": "Το email στάλθηκε επιτυχώς!"}), 200
+
+    except Exception as e:
+        print("Γενικό σφάλμα στο send-trip-email:")
+        traceback.print_exc()  
+        return jsonify({"error": "Αποτυχία αποστολής email.", "details": str(e)}), 500

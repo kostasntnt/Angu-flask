@@ -81,4 +81,19 @@ export class TravelService {
     const headers = this.getHeaders(); // Προσθήκη JWT αν χρειάζεται
     return this.http.post(`${this.baseUrl}/get-location-reviews`, { location }, { headers });
   }
+
+  // 7. Αποθήκευση Sequential Διαδρομής (MyCustomTrip)
+saveSequentialTrip(tripData: any): Observable<any> {
+  const headers = this.getHeaders();
+  return this.http.post(`${this.baseUrl}/save-sequential-trip`, tripData, { headers });
+}
+
+
+// Μέσα στο travel.service.ts
+sendTripEmail(formData: FormData): Observable<any> {
+    // Στέλνουμε το formData αυτούσιο. 
+    // Ο browser θα ρυθμίσει αυτόματα το Content-Type σε multipart/form-data.
+    return this.http.post('http://localhost:5000/api/send-trip-email', formData);
+  }
+
 }

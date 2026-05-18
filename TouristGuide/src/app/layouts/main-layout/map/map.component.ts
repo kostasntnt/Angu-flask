@@ -8,6 +8,7 @@ import { TravelService } from '../../../services/travel.service';
 })
 export class MapComponent {
   destination: string = '';
+  
   duration: number = 3; 
   season: 'winter' | 'summer' = 'summer';
   isLongTrip: boolean = false;

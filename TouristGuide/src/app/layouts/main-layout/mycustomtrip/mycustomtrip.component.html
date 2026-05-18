@@ -1,0 +1,107 @@
+<div class="custom-trip-wrapper py-5">
+  <div class="container">
+    
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-8">
+        <div class="user-origin-card d-flex align-items-center p-3 shadow-sm">
+          <div class="origin-icon">
+            <i class="bi bi-geo-alt-fill"></i>
+          </div>
+          <div class="ms-3">
+            <small class="text-uppercase tracking-wider opacity-75 d-block">Αφετηρία Διαδρομής</small>
+            <span class="fw-bold fs-5">{{ userLocationName }}</span>
+          </div>
+          <div class="ms-auto">
+            <span class="pulse-indicator"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-8">
+        <div class="search-section p-4 shadow-lg rounded-4 bg-white">
+          <h4 class="fw-bold mb-3 text-dark">Πού θέλετε να πάτε μετά;</h4>
+          <div class="input-group input-group-lg">
+            <input type="text" class="form-control border-2" 
+                   [(ngModel)]="searchQuery" 
+                   (keyup.enter)="searchLocation()"
+                   placeholder="π.χ. Πάργα, Σύβοτα, Μετέωρα...">
+            <button class="btn btn-primary px-4 fw-bold" (click)="searchLocation()" [disabled]="isSearching">
+              <span *ngIf="!isSearching"><i class="bi bi-search me-2"></i>Αναζήτηση</span>
+              <span *ngIf="isSearching" class="spinner-border spinner-border-sm"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row justify-content-center mb-5" *ngIf="currentStepData">
+      <div class="col-lg-9">
+        <div class="preview-card card border-0 shadow-lg overflow-hidden animate__animated animate__fadeInUp">
+          <div class="row g-0">
+            <div class="col-md-5 bg-light p-2 d-flex gap-2">
+              <div class="preview-img-container w-50">
+                <img [src]="currentStepData.images[0]" class="img-fluid rounded-3 h-100 object-fit-cover" alt="view 1">
+              </div>
+              <div class="preview-img-container w-50">
+                <img [src]="currentStepData.images[1]" class="img-fluid rounded-3 h-100 object-fit-cover" alt="view 2">
+              </div>
+            </div>
+            <div class="col-md-7">
+              <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <h2 class="fw-bold text-dark mb-1">{{ currentStepData.name }}</h2>
+                    <p class="text-muted small mb-3"><i class="bi bi-info-circle me-1"></i> {{ currentStepData.description }}</p>
+                  </div>
+                  <div class="dist-badge text-center">
+                    <span class="d-block fw-bold fs-4 text-primary">{{ currentStepData.distance_km }}</span>
+                    <small class="text-uppercase fw-bold">Χλμ</small>
+                  </div>
+                </div>
+                
+                <div class="d-flex align-items-center justify-content-between mt-4 pt-3 border-top">
+                  <div class="origin-info">
+                    <small class="text-muted d-block">Από {{ currentStepData.origin_city }}</small>
+                    <span class="badge bg-light text-dark border"><i class="bi bi-clock me-1"></i> {{ currentStepData.travel_time }}</span>
+                  </div>
+                  <button class="btn btn-success btn-lg px-5 rounded-pill fw-bold shadow" (click)="addToTrip()">
+                    Προσθήκη <i class="bi bi-plus-lg ms-2"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row justify-content-center" *ngIf="tripSteps.length > 0">
+      <div class="col-lg-7">
+        <h3 class="fw-bold mb-4">Η Διαδρομή σας</h3>
+        <div class="trip-timeline">
+          
+          <div *ngFor="let step of tripSteps; let i = index" class="timeline-item">
+            <div class="timeline-connector" *ngIf="i >= 0">
+               <div class="connector-line"></div>
+               <div class="connector-dist" *ngIf="i >= 0">
+                  <i class="bi bi-chevron-down"></i>
+                  <span>+{{ step.distance_km }} χλμ</span>
+               </div>
+            </div>
+
+           <button class="btn btn-link text-danger ms-auto" (click)="removeStep(i)">
+            Αφαίρεση <i class="bi bi-trash3"></i>
+           </button>
+
+        </div>
+
+        <button class="btn btn-dark w-100 py-3 mt-5 rounded-4 shadow-lg fw-bold fs-5" (click)="saveFinalTrip()">
+          <i class="bi bi-heart-fill text-danger me-2"></i> Αποθήκευση στα Αγαπημένα
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

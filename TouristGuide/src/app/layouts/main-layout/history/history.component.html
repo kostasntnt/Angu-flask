@@ -31,7 +31,10 @@
       </div>
       <div class="card-body">
         <h3>{{ trip?.location }}</h3>
-        <p class="days-count">🗓️ {{ trip?.days_count }} ημέρες</p>
+        <p class="days-count">
+          <span *ngIf="trip?.days_count">🗓️ {{ trip?.days_count }} ημέρες</span>
+          <span *ngIf="!trip?.days_count && trip?.steps">📍 {{ trip?.steps?.length }} στάσεις</span>
+        </p>
       </div>
       <div class="card-footer">
         <span>Προβολή Προγράμματος ➔</span>
@@ -40,30 +43,61 @@
   </div>
 
   <div class="modal-backdrop" *ngIf="selectedTrip" (click)="closeModal()">
-    <div class="modal-main" (click)="$event.stopPropagation()">
+<div class="modal-main" id="modal-pdf-content" (click)="$event.stopPropagation()">
+      
       <div class="modal-header">
-        <div>
-          <h2>{{ selectedTrip?.trip_data?.title }}</h2>
-          <p class="loc-sub">📍 {{ selectedTrip?.location }}</p>
+        <div class="modal-header-left">
+          <h2>{{ selectedTrip?.type === 'sequential' ? selectedTrip?.location : selectedTrip?.trip_data?.title }}</h2>
+          <p class="loc-sub">📍 {{ selectedTrip?.type === 'sequential' ? 'Προσαρμοσμένη Διαδρομή' : selectedTrip?.location }}</p>
+          
+          <div class="modal-actions-wrapper">
+            <button type="button" class="btn-action-pdf" (click)="exportToPDF()">
+              📥 Λήψη σε PDF
+            </button>
+            <button type="button" class="btn-action-email" (click)="sendToEmail()">
+              ✉️ Αποστολή στο Email
+            </button>
+          </div>
         </div>
-        <button class="close-btn" (click)="closeModal()">&times;</button>
+        <button class="close-btn" (click)="closeModal()">×</button>
       </div>
-      <div class="modal-content-scroll">
-        <div class="day-block" *ngFor="let day of selectedTrip?.trip_data?.days">
-          <h4>Ημέρα {{ day?.day }}</h4>
-          <ul class="activity-list">
-            <li *ngFor="let act of day?.activities" class="history-activity-item">
-              <span>{{ act }}</span>
-              <a [href]="'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(act + ' ' + selectedTrip?.location)" 
-                 target="_blank" 
-                 class="btn-map-link"
-                 title="Οδηγίες στους Χάρτες">
-                 <span class="map-emoji">📍</span>
-              </a>
-            </li>
-          </ul>
+
+  <div class="modal-content-scroll">
+    
+    <div *ngIf="selectedTrip?.trip_data?.days">
+      <div class="day-block" *ngFor="let day of selectedTrip?.trip_data?.days">
+        <h4>Ημέρα {{ day?.day }}</h4>
+        <ul class="activity-list">
+          <li *ngFor="let act of day?.activities" class="history-activity-item">
+            <span>{{ act }}</span>
+            <a [href]="'https://www.google.com/maps/search/' + encodeURIComponent(act + ' ' + selectedTrip?.location)" 
+               target="_blank" class="btn-map-link">
+               <span class="map-emoji">📍</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div *ngIf="selectedTrip?.steps" class="custom-timeline">
+      <div class="timeline-step" *ngFor="let step of selectedTrip?.steps; let i = index">
+        <div class="step-header">
+          <span class="step-number">{{ i + 1 }}</span>
+          <h5>{{ step.name }}</h5>
+        </div>
+        <div class="step-details">
+          <p class="step-desc">{{ step.description }}</p>
+          <p class="step-meta" *ngIf="step.distance_km > 0">
+            🚗 {{ step.distance_km }} χλμ από {{ step.origin_city }}
+          </p>
+          <a [href]="'https://www.google.com/maps/search/' + encodeURIComponent(step.name)" 
+             target="_blank" class="btn-map-link-small">
+             Προβολή στο χάρτη ➔
+          </a>
         </div>
       </div>
     </div>
+
   </div>
+</div>
 </div>

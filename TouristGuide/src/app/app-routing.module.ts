@@ -18,6 +18,7 @@ import { CostsComponent } from './layouts/main-layout/costs/costs.component';
 import { ReviewsComponent } from './layouts/main-layout/reviews/reviews.component';
 import { MapComponent } from './layouts/main-layout/map/map.component';
 import { HistoryComponent} from './layouts/main-layout/history/history.component';
+import { MycustomtripComponent } from './layouts/main-layout/mycustomtrip/mycustomtrip.component';
 // Guard
 import { authGuard } from './auth.guard';
 
@@ -35,6 +36,8 @@ const routes: Routes = [
 
     
 
+    
+
   ]
 },
 {
@@ -48,7 +51,9 @@ const routes: Routes = [
     { path: 'reviews', component: ReviewsComponent },
     { path: 'map', component: MapComponent },
     { path: 'history', component: HistoryComponent }, // <-- ΜΟΝΟ ΑΥΤΗ Η ΠΡΟΣΘΗΚΗ
-    { path: '', redirectTo: 'userhome', pathMatch: 'full' }
+    { path: 'my-custom-trip', component: MycustomtripComponent },
+    { path: '', redirectTo: 'userhome', pathMatch: 'full' },
+    
   ]
 },
 { path: '**', redirectTo: '' } // Redirect αν γραφτεί λάθος URL
