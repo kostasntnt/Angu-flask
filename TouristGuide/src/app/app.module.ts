@@ -20,6 +20,7 @@ import { ReviewsComponent } from './layouts/main-layout/reviews/reviews.componen
 import { MapComponent } from './layouts/main-layout/map/map.component';
 import { HistoryComponent } from './layouts/main-layout/history/history.component';
 import { MycustomtripComponent } from './layouts/main-layout/mycustomtrip/mycustomtrip.component';
+import { BaseChartDirective } from 'ng2-charts';
 
 
 
@@ -50,7 +51,9 @@ import { MycustomtripComponent } from './layouts/main-layout/mycustomtrip/mycust
     AppRoutingModule,
     RouterModule,
     FormsModule ,
-    HttpClientModule
+    HttpClientModule,
+    BaseChartDirective
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

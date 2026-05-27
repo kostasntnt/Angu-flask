@@ -426,3 +426,50 @@ def send_trip_email():
         print("Γενικό σφάλμα στο send-trip-email:")
         traceback.print_exc()  
         return jsonify({"error": "Αποτυχία αποστολής email.", "details": str(e)}), 500
+    
+    # --- 6. ΣΤΑΤΙΣΤΙΚΑ ΔΗΜΟΦΙΛΩΝ ΠΕΡΙΟΧΩΝ (AGGREGATION) ---
+@routes.route('/api/search-statistics', methods=['GET'])
+def get_search_statistics():
+    try:
+        # 1. Υπολογισμός του συνολικού αριθμού των εγγράφων στη συλλογή trips
+        total_trips = db.trips.count_documents({"location": {"$exists": True, "$ne": None, "$ne": ""}})
+        
+        if total_trips == 0:
+            return jsonify([]), 200
+
+        # 2. Aggregation Pipeline: Ομαδοποίηση ανά τοποθεσία και μέτρημα εμφανίσεων
+        pipeline = [
+            # Φιλτράρουμε έγκυρα non-empty locations
+            {"$match": {"location": {"$exists": True, "$ne": None, "$ne": ""}}},
+            
+            # Group ανά location και αύξηση του count κατά 1 για κάθε έγγραφο
+            {"$group": {
+                "_id": "$location",
+                "count": {"$sum": 1}
+            }},
+            
+            # Ταξινόμηση από το μεγαλύτερο count στο μικρότερο (Φθίνουσα)
+            {"$sort": {"count": -1}}
+        ]
+
+        results = list(db.trips.aggregate(pipeline))
+
+        # 3. Μορφοποίηση των αποτελεσμάτων και υπολογισμός των ποσοστών %
+        statistics = []
+        for item in results:
+            location_name = item["_id"]
+            count = item["count"]
+            percentage = round((count / total_trips) * 100, 1)
+
+            statistics.append({
+                "location": location_name,
+                "count": count,
+                "percentage": percentage
+            })
+
+        return jsonify(statistics), 200
+
+    except Exception as e:
+        print("Σφάλμα κατά την ανάκτηση των στατιστικών:")
+        traceback.print_exc()
+        return jsonify({"error": "Αποτυχία φόρτωσης στατιστικών αναζήτησης.", "details": str(e)}), 500

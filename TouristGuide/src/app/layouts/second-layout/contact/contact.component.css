@@ -1,0 +1,47 @@
+
+/* User Profile Widget Styling */
+.user-profile-widget {
+    position: absolute;
+    top: 120px;
+    right: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    background-color: rgba(155, 141, 141, 0.95);
+    padding: 90px 180px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid #eee;
+    z-index: 500;
+}
+
+.user-name {
+    font-weight: 800;
+    color: #212529;
+    font-size: 1.25 rem;
+}
+
+.user-email {
+    color: #03111d;
+    font-size: 1.25 rem;
+    margin-bottom: 12px;
+}
+
+.github-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: #03111f;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: color 0.2s ease-in-out;
+}
+
+.github-link:hover {
+    color: #007bff;
+}
+
+.github-icon {
+    margin-right: 6px;
+    fill: currentColor;
+}

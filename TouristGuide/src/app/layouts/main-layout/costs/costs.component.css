@@ -34,3 +34,75 @@
   border-radius: 15px;
   background: #4e73df;
 }
+
+/* --- Γενικά Στυλ Σελίδας --- */
+.costs-container {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+/* --- Promo Card --- */
+.custom-promo-card {
+    background: #ffffff !important;
+    border-radius: 15px !important;
+    border-left: 5px solid #1a73e8 !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
+    transition: transform 0.2s ease;
+}
+
+.custom-promo-card:hover {
+    transform: translateY(-2px);
+}
+
+/* --- Control Panel (Πλαϊνό μενού παραμέτρων) --- */
+.control-panel {
+    background: #ffffff;
+    border-radius: 15px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
+}
+
+.control-panel .form-control, 
+.control-panel .form-select {
+    border-radius: 8px !important;
+    padding: 10px !important;
+}
+
+/* --- Main Results Card (Το κάρτα του συνολικού κόστους) --- */
+.main-total-card {
+    border-radius: 15px !important;
+    box-shadow: 0 8px 20px rgba(118, 75, 162, 0.3) !important;
+}
+
+.main-total-card h1 {
+    margin: 15px 0;
+    letter-spacing: -2px;
+}
+
+/* --- Detail Cards (Διαμονή, Μεταφορικά, Φαγητό) --- */
+.detail-card {
+    border-radius: 15px !important;
+    border: none !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05) !important;
+    transition: all 0.3s ease;
+}
+
+.detail-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1) !important;
+}
+
+.icon-circle {
+    font-size: 2rem;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+/* --- Πίνακας Δραστηριοτήτων --- */
+.table {
+    margin-top: 10px;
+}
+
+.table td {
+    padding: 12px !important;
+    vertical-align: middle;
+}
