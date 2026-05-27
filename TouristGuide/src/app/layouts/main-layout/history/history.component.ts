@@ -15,7 +15,7 @@ export class HistoryComponent implements OnInit {
   activeTab: 'all' | 'favs' = 'all';
   selectedTrip: any = null;
 
-  // Ορισμός του helper για το HTML
+  // Ορισμός του helper 
   encodeURIComponent = window.encodeURIComponent;
 
   constructor(private travelService: TravelService) {}
@@ -84,7 +84,7 @@ export class HistoryComponent implements OnInit {
   }
 
 
-    // ΝΕΑ ΠΡΟΣΘΗΚΗ: Μέθοδοι για τα νέα features
+    //  Μέθοδοι για τα νέα features
     exportToPDF(): void {
     if (!this.selectedTrip) return;
 
@@ -96,19 +96,19 @@ export class HistoryComponent implements OnInit {
       return;
     }
 
-    // 1. Κρατάμε τις αρχικές CSS τιμές για να τις επαναφέρουμε μετά
+    // Αρχικές CSS τιμές για να τις επαναφέρουμε μετά
     const originalModalMaxHeight = element.style.maxHeight;
     const originalModalHeight = element.style.height;
     const originalScrollOverflow = scrollContainer ? scrollContainer.style.overflowY : '';
     const originalScrollMaxHeight = scrollContainer ? scrollContainer.style.maxHeight : '';
 
-    // 2. Κρύβουμε τα κουμπιά ενεργειών και το "X" κλεισίματος για να μην βγουν στο PDF
+    // Κρύβουμε τα κουμπιά ενεργειών και το "X" κλεισίματος για να μην βγουν στο PDF
     const actionsWrapper = element.querySelector('.modal-actions-wrapper') as HTMLElement;
     const closeBtn = element.querySelector('.close-btn') as HTMLElement;
     if (actionsWrapper) actionsWrapper.style.visibility = 'hidden'; // Χρησιμοποιούμε visibility για να μην χαλάσει το layout
     if (closeBtn) closeBtn.style.visibility = 'hidden';
 
-    // 3. ΞΕΔΙΠΛΩΝΟΥΜΕ ΤΟ MODAL (Force expand) ώστε να φανεί ΟΛΟ το κρυμμένο κείμενο
+    // Force expand του Modal ώστε να φανεί ολο το κρυμμένο κείμενο
     element.style.maxHeight = 'none';
     element.style.height = 'auto';
     if (scrollContainer) {
@@ -116,10 +116,10 @@ export class HistoryComponent implements OnInit {
       scrollContainer.style.maxHeight = 'none';
     }
 
-    // Μικρή καθυστέρηση μερικών χιλιοστών για να προλάβει ο browser να κάνει render το ξεδιπλωμένο modal
+    // Μικρή καθυστέρηση render του browser στο  modal
     setTimeout(() => {
       html2canvas(element, {
-        scale: 2, // Υψηλή ανάλυση για καθαρά γράμματα
+        scale: 2, // Υψηλή ανάλυση 
         useCORS: true,
         logging: false,
         windowHeight: element.scrollHeight // Αναγκάζουμε το canvas να διαβάσει όλο το πραγματικό ύψος
@@ -128,14 +128,14 @@ export class HistoryComponent implements OnInit {
         
         // Δημιουργία PDF A4
         const pdf = new jsPDF('p', 'mm', 'a4');
-        const imgWidth = 190; // Αφήνουμε 10mm περιθώριο αριστερά-δεξιά (210 - 20)
-        const pageHeight = 277; // Αφήνουμε περιθώριο πάνω-κάτω (297 - 20)
+        const imgWidth = 190; 
+        const pageHeight = 277; 
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
         
         let heightLeft = imgHeight;
-        let position = 10; // Αρχικό περιθώριο 10mm από πάνω
+        let position = 10;
 
-        // Προσθήκη πρώτης σελίδας με περιθώρια (margins)
+        // Προσθήκη πρώτης σελίδας με περιθώρια
         pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
         heightLeft -= pageHeight;
 
@@ -147,7 +147,7 @@ export class HistoryComponent implements OnInit {
           heightLeft -= pageHeight;
         }
 
-        // 4. ΕΠΑΝΑΦΟΡΑ ΤΟΥ UI στην αρχική του κατάσταση (Μαζεύουμε πάλι το modal με scroll)
+        //  ΕΠΑΝΑΦΟΡΑ ΤΟΥ UI στην αρχική του κατάσταση (Μαζεύουμε πάλι το modal με scroll)
         element.style.maxHeight = originalModalMaxHeight;
         element.style.height = originalModalHeight;
         if (scrollContainer) {
@@ -173,13 +173,13 @@ export class HistoryComponent implements OnInit {
         if (actionsWrapper) actionsWrapper.style.visibility = 'visible';
         if (closeBtn) closeBtn.style.visibility = 'visible';
       });
-    }, 150); // 150ms είναι αρκετά για το re-render
+    }, 150); // καθυστερηση για re render
   }
 
 sendToEmail(): void {
     if (!this.selectedTrip) return;
 
-    // 1. Ζητάμε το email από τον χρήστη
+    // mail απο χρηστη
     const userEmail = prompt('Παρακαλώ εισάγετε το email σας για την αποστολή του προγράμματος:');
     
     if (!userEmail) return; 
@@ -198,7 +198,7 @@ sendToEmail(): void {
 
     alert('Η προετοιμασία του email ξεκίνησε. Παρακαλώ περιμένετε λίγα δευτερόλεπτα...');
 
-    // 2. Κρατάμε τις αρχικές CSS τιμές για επαναφορά
+    //  Κρατάμε τις αρχικές CSS τιμές για επαναφορά
     const originalModalMaxHeight = element.style.maxHeight;
     const originalModalHeight = element.style.height;
     const originalScrollOverflow = scrollContainer ? scrollContainer.style.overflowY : '';
@@ -210,7 +210,7 @@ sendToEmail(): void {
     if (actionsWrapper) actionsWrapper.style.visibility = 'hidden';
     if (closeBtn) closeBtn.style.visibility = 'hidden';
 
-    // 3. Ξεδιπλώνουμε το modal για να τραβήξουμε όλο το κείμενο
+    //  Ξεδιπλώνουμε το modal για να τραβήξουμε όλο το κείμενο
     element.style.maxHeight = 'none';
     element.style.height = 'auto';
     if (scrollContainer) {
@@ -218,7 +218,7 @@ sendToEmail(): void {
       scrollContainer.style.maxHeight = 'none';
     }
 
-    // 4. Δημιουργία του Snapshot με βελτιστοποιημένο μέγεθος
+    //  Δημιουργία του Snapshot με βελτιστοποιημένο μέγεθος
     setTimeout(() => {
       html2canvas(element, {
         scale: 1.5,
@@ -240,22 +240,19 @@ sendToEmail(): void {
         if (actionsWrapper) actionsWrapper.style.visibility = 'visible';
         if (closeBtn) closeBtn.style.visibility = 'visible';
 
-        // ===================================================================
-        // 🌟 ΜΕΤΑΤΡΟΠΗ ΣΕ FORMDATA (1η ΜΕΘΟΔΟΣ) 🌟
-        // ===================================================================
-        
-        // α) Μετατρέπουμε το base64 string σε κανονικό Blob αρχείο
+
+        //  Μετατρέπουμε το base64 string σε κανονικό Blob αρχείο
         const imageBlob = this.base64ToBlob(imageBase64, 'image/jpeg');
 
-        // β) Δημιουργούμε το FormData payload
+        //  Δημιουργούμε το FormData payload
         const formData = new FormData();
         formData.append('email', userEmail);
         formData.append('location', this.selectedTrip.location);
         
-        // γ) Επισυνάπτουμε το Blob δίνοντάς του ένα όνομα αρχείου (π.χ. 'trip-plan.jpg')
+        // Επισυνάπτουμε το Blob δίνοντάς του ένα όνομα αρχείου 
         formData.append('file', imageBlob, 'trip-plan.jpg');
 
-        // 5. Κλήση του TravelService στέλνοντας πλέον το formData αντί για σκέτα strings
+        //  Κλήση του TravelService στέλνοντας πλέον το formData αντί για σκέτα strings
         this.travelService.sendTripEmail(formData)
           .subscribe({
             next: (response: any) => {
@@ -281,7 +278,7 @@ sendToEmail(): void {
     }, 150);
 }
 
-// 🌟 Πρόσθεσε αυτή τη βοηθητική συνάρτηση κάπου μέσα στο ίδιο Component class
+
 private base64ToBlob(base64Data: string, contentType: string): Blob {
     // Αφαιρούμε το πρόθεμα "data:image/jpeg;base64," αν υπάρχει
     const block = base64Data.split(';');
@@ -304,5 +301,5 @@ private base64ToBlob(base64Data: string, contentType: string): Blob {
 }
 
 
-  } // Κλείσιμο της κλάσης
+  } 
 

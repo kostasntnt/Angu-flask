@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TravelService } from '../../../services/travel.service'; // Επιβεβαίωσε το σωστό path
+import { TravelService } from '../../../services/travel.service'; 
 import { Router } from '@angular/router';
 
 @Component({
@@ -47,7 +47,7 @@ export class MycustomtripComponent implements OnInit {
       ? this.userLocationName 
       : this.tripSteps[this.tripSteps.length - 1].name;
 
-    // Προσομοίωση AI - Στο μέλλον μπορείς να καλείς ένα endpoint του TravelService εδώ
+    
     setTimeout(() => {
       this.currentStepData = {
         name: this.searchQuery,
@@ -89,12 +89,12 @@ export class MycustomtripComponent implements OnInit {
       alert('Προσθέστε τουλάχιστον έναν προορισμό!');
       return;
     }
-    // 2. Εμφάνιση παραθύρου για το όνομα (Prompt)
-  // Προτείνουμε ένα όνομα βασισμένο στον πρώτο προορισμό
+    //  Εμφάνιση παραθύρου για το όνομα (Prompt)
+  // Προτείνουμε  όνομα βασισμένο στον πρώτο προορισμό
   const defaultName = `Ταξίδι προς ${this.tripSteps[0].name}`;
   const customName = prompt('Πώς θέλετε να ονομάσετε αυτή τη διαδρομή;', defaultName);
 
-  // 3. Αν ο χρήστης πατήσει "Cancel" (το customName θα είναι null), ακυρώνουμε την αποθήκευση
+  //  Αν ο χρήστης πατήσει "Cancel" (το customName θα είναι null), ακυρώνουμε την αποθήκευση
   if (customName === null) {
     return;
   }
@@ -111,7 +111,7 @@ export class MycustomtripComponent implements OnInit {
     this.travelService.saveSequentialTrip(tripPayload).subscribe({
       next: (res) => {
         alert('Η διαδρομή αποθηκεύτηκε επιτυχώς στα Αγαπημένα! ❤️');
-        this.router.navigate(['/user/history']); // Ανακατεύθυνση στο ιστορικό
+        this.router.navigate(['/user/history']); 
       },
       error: (err) => {
         console.error('Save failed:', err);

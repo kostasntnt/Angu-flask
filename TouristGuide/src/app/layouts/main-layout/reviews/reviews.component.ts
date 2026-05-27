@@ -13,7 +13,7 @@ export class ReviewsComponent implements OnInit {
   selectedLocation: string = '';
   isLoading: boolean = false;
   isFetchingReviews: boolean = false;
-  activeTripId: any = null; // Το κάναμε any για να μην παραπονιέται το template
+  activeTripId: any = null; 
 
   constructor(private travelService: TravelService) {}
 
@@ -36,9 +36,9 @@ export class ReviewsComponent implements OnInit {
     });
   }
 
-  // ΕΔΩ ΕΙΝΑΙ Η ΔΙΟΡΘΩΣΗ: Προσθέσαμε το tripId ως δεύτερη παράμετρο
+  
   fetchLocationReviews(location: string, tripId: any) {
-    // Toggle logic: Αν είναι ήδη ανοιχτό, κλείστο
+   
     if (this.activeTripId === tripId) {
       this.activeTripId = null;
       this.selectedLocation = '';

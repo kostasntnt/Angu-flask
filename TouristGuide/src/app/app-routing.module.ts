@@ -50,7 +50,7 @@ const routes: Routes = [
     { path: 'costs', component: CostsComponent },
     { path: 'reviews', component: ReviewsComponent },
     { path: 'map', component: MapComponent },
-    { path: 'history', component: HistoryComponent }, // <-- ΜΟΝΟ ΑΥΤΗ Η ΠΡΟΣΘΗΚΗ
+    { path: 'history', component: HistoryComponent }, 
     { path: 'my-custom-trip', component: MycustomtripComponent },
     { path: '', redirectTo: 'userhome', pathMatch: 'full' },
     

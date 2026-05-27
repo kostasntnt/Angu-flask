@@ -1,16 +1,16 @@
-/* --- Container & Layout --- */
-.history-wrapper { 
-  padding: 40px 20px; 
-  max-width: 1200px; 
-  margin: auto; 
+/*  Container & Layout */
+.history-wrapper {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: auto;
   min-height: 80vh;
 }
 
-.header-section { 
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
-  margin-bottom: 40px; 
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
   border-bottom: 2px solid #f0f2f5;
   padding-bottom: 20px;
 }
@@ -23,20 +23,20 @@
   gap: 12px;
 }
 
-/* --- Filter Tabs --- */
+/* Tab φιλτρων */
 .filter-tabs {
   display: flex;
   gap: 12px;
 }
 
-.filter-tabs button { 
-  background: #f0f2f5; 
-  border: 1px solid transparent; 
-  padding: 10px 25px; 
-  border-radius: 25px; 
-  cursor: pointer; 
-  transition: all 0.3s ease; 
-  font-weight: 600; 
+.filter-tabs button {
+  background: #f0f2f5;
+  border: 1px solid transparent;
+  padding: 10px 25px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
   color: #636e72;
 }
 
@@ -44,82 +44,94 @@
   background: #e2e5e9;
 }
 
-.filter-tabs button.active { 
-  background: #007bff; 
-  color: white; 
-  box-shadow: 0 4px 12px rgba(0,123,255,0.3); 
+.filter-tabs button.active {
+  background: #007bff;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
 }
 
-/* --- Trips Grid & Cards --- */
-.trips-grid { 
-  display: grid; 
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
-  gap: 30px; 
+/* καρτες */
+.trips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
 }
 
-.trip-card { 
-  background: white; 
-  border-radius: 20px; 
-  padding: 22px; 
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-  position: relative; 
-  cursor: pointer; 
-  border: 1px solid #f1f1f1; 
+.trip-card {
+  background: white;
+  border-radius: 20px;
+  padding: 22px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  cursor: pointer;
+  border: 1px solid #f1f1f1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.trip-card:hover { 
-  transform: translateY(-10px); 
-  box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
+.trip-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
   border-color: #007bff55;
 }
 
-/* --- Card Header & Actions (Διόρθωση για τα κουμπιά της κάρτας) --- */
-.card-header { 
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
-  margin-bottom: 18px; 
+/* κουμπια καρτας */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
 }
 
-.date-tag { 
-  font-size: 0.75rem; 
-  color: #636e72; 
-  background: #f8f9fa; 
-  padding: 5px 12px; 
-  border-radius: 12px; 
+.date-tag {
+  font-size: 0.75rem;
+  color: #636e72;
+  background: #f8f9fa;
+  padding: 5px 12px;
+  border-radius: 12px;
   font-weight: 500;
 }
 
-.card-actions { 
-  display: flex; 
-  gap: 8px; 
+.card-actions {
+  display: flex;
+  gap: 8px;
 }
 
-/* --- Action Buttons (Favorites & Delete στην Κάρτα) --- */
+/* Favorite-Delete σε καρτα */
 .action-btn {
-  background: #ffffff; 
-  border: 1px solid #eee; 
+  background: #ffffff;
+  border: 1px solid #eee;
   width: 36px;
   height: 36px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer; 
-  font-size: 1.1rem; 
+  cursor: pointer;
+  font-size: 1.1rem;
   transition: all 0.2s;
-  padding: 0; /* Καθαρισμός padding */
+  padding: 0;
 }
 
-.action-btn:hover { background: #f8f9fa; }
-.fav-btn:hover { background: #fff0f0; border-color: #ff7675; }
-.delete-btn:hover { background: #fff0f0; color: #d63031; border-color: #fab1a0; transform: scale(1.1); }
+.action-btn:hover {
+  background: #f8f9fa;
+}
 
-/* --- Card Content --- */
+.fav-btn:hover {
+  background: #fff0f0;
+  border-color: #ff7675;
+}
+
+.delete-btn:hover {
+  background: #fff0f0;
+  color: #d63031;
+  border-color: #fab1a0;
+  transform: scale(1.1);
+}
+
+
 .card-body h3 {
   margin: 0 0 10px 0;
   color: #2d3436;
@@ -144,26 +156,31 @@
   justify-content: flex-end;
 }
 
-/* --- Modal Stylings --- */
-.modal-backdrop { 
-  position: fixed; 
-  top: 0; left: 0; width: 100%; height: 100%; 
-  background: rgba(0,0,0,0.6); 
-  display: flex; justify-content: center; align-items: center; 
-  z-index: 2000; 
-  backdrop-filter: blur(8px); 
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  backdrop-filter: blur(8px);
 }
 
-.modal-main { 
-  background: white; 
-  width: 95%; 
-  max-width: 750px; 
-  border-radius: 28px; 
-  padding: 35px; 
-  max-height: 85vh; 
-  display: flex; 
-  flex-direction: column; 
-  box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+.modal-main {
+  background: white;
+  width: 95%;
+  max-width: 750px;
+  border-radius: 28px;
+  padding: 35px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
 }
 
 .modal-header {
@@ -191,31 +208,52 @@
   transition: 0.2s;
 }
 
-.close-btn:hover { background: #dfe4ea; transform: rotate(90deg); }
-
-.modal-content-scroll { 
-  overflow-y: auto; 
-  margin-top: 25px; 
-  padding-right: 15px; 
+.close-btn:hover {
+  background: #dfe4ea;
+  transform: rotate(90deg);
 }
 
-/* Custom Scrollbar */
-.modal-content-scroll::-webkit-scrollbar { width: 6px; }
-.modal-content-scroll::-webkit-scrollbar-thumb { background: #dfe4ea; border-radius: 10px; }
+.modal-content-scroll {
+  overflow-y: auto;
+  margin-top: 25px;
+  padding-right: 15px;
+}
 
-.day-block { 
-  border-left: 4px solid #007bff; 
-  padding: 5px 0 5px 20px; 
-  margin-bottom: 25px; 
+/*  Scrollbar */
+.modal-content-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-content-scroll::-webkit-scrollbar-thumb {
+  background: #dfe4ea;
+  border-radius: 10px;
+}
+
+.day-block {
+  border-left: 4px solid #007bff;
+  padding: 5px 0 5px 20px;
+  margin-bottom: 25px;
   background: linear-gradient(to right, #f0f7ff, white);
   border-radius: 0 10px 10px 0;
 }
 
-.day-block h4 { color: #007bff; margin-bottom: 10px; }
+.day-block h4 {
+  color: #007bff;
+  margin-bottom: 10px;
+}
 
-/* --- States --- */
-.loader-container { text-align: center; padding: 50px; }
-.no-trips { text-align: center; padding: 100px; color: #b2bec3; font-style: italic; }
+/*  States */
+.loader-container {
+  text-align: center;
+  padding: 50px;
+}
+
+.no-trips {
+  text-align: center;
+  padding: 100px;
+  color: #b2bec3;
+  font-style: italic;
+}
 
 .activity-list {
   list-style: none;
@@ -250,7 +288,7 @@
   justify-content: center;
   align-items: center;
   text-decoration: none;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
 }
 
@@ -271,7 +309,7 @@
   font-weight: 500;
 }
 
-/* Στυλ για τα νέα κουμπιά στο Modal */
+/* νεα κουμπια */
 .modal-actions-wrapper {
   display: flex !important;
   gap: 12px;

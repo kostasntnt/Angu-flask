@@ -27,7 +27,7 @@ export class MapComponent {
     private cdr: ChangeDetectorRef
   ) {}
 
-  // Πιο "έξυπνη" λήψη κειμένου για να αποφύγουμε τα [object Object]
+  // λήψη κειμένου για να αποφύγουμε τα [object Object]
   getActivityText(activity: any): string {
     if (!activity) return '';
     if (typeof activity === 'string') return activity;
@@ -78,7 +78,7 @@ export class MapComponent {
     });
   }
 
-  // ΔΙΟΡΘΩΜΕΝΗ SAVE TRIP ΜΕ API CALL
+  // SAVE TRIP ΜΕ API CALL
   saveTrip() {
     if (!this.tripResult || !this.tripResult._id) {
       alert('Σφάλμα: Δεν βρέθηκε το ID του ταξιδιού.');

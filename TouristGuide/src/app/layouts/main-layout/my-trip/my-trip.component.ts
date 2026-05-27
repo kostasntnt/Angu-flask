@@ -27,7 +27,6 @@ export class MyTripComponent implements OnInit {
         this.travelService.getNearbyRecommendations(coords.lat, coords.lng)
           .subscribe({
             next: (res: any) => {
-              // ΔΙΟΡΘΩΣΗ: Χρήση του σωστού κλειδιού 'nearbySuggestions' από το Flask
               this.nearbySuggestions = res.nearbySuggestions || [];
               this.userCity = res.user_city || 'Ελλάδα';
               this.isLoadingNearby = false;

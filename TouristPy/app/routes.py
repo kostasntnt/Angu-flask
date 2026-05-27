@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify, make_response
+from flask_cors import cross_origin 
 from app.db import db
 import bcrypt
 import os
@@ -42,7 +43,7 @@ def safe_int(val):
     except (ValueError, TypeError):
         return 0
 
-# --- 1. GENERATE TRIP LOGIC ---
+# ---  GENERATE TRIP LOGIC ---
 def logic_generate_trip():
     current_user = "guest"
     try:
@@ -89,7 +90,7 @@ def logic_generate_trip():
         traceback.print_exc()
         return jsonify({"error": str(e), "days": []}), 500
 
-# --- 2. CALCULATE COSTS (Η ΠΛΗΡΗΣ ΔΙΟΡΘΩΜΕΝΗ ΕΚΔΟΣΗ) ---
+# ---  CALCULATE COSTS  ---
 @routes.route('/calculate-costs', methods=['POST', 'OPTIONS'])
 def calculate_costs():
     if request.method == 'OPTIONS': 
@@ -142,7 +143,7 @@ def calculate_costs():
         exp = safe_int(ai_res.get('daily_expenses', 0))
         act = safe_int(ai_res.get('activities', 0))
         
-        # Εδώ χτίζουμε το JSON που περιμένει το Angular (συμπεριλαμβανομένου του transport_details)
+        # Χτιζουμε JSON που περιμένει η Angu
         final_response = {
             "accommodation": acc,
             "daily_expenses": exp,
@@ -166,7 +167,7 @@ def calculate_costs():
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
 
-# --- 3. NEARBY RECOMMENDATIONS ---
+# ---  NEARBY RECOMMENDATIONS ---
 @routes.route('/nearby-recommendations', methods=['POST', 'OPTIONS'])
 def nearby_recommendations():
     if request.method == 'OPTIONS': return make_response("", 200)
@@ -203,7 +204,7 @@ def nearby_recommendations():
     except:
         return jsonify({"nearbySuggestions": default_suggestions, "user_city": "Ελλάδα"}), 200
 
-# --- 4. ΛΟΙΠΑ ROUTES ---
+# ---  ΛΟΙΠΑ ROUTES ---
 @routes.route('/generate-trip', methods=['POST', 'OPTIONS'])
 @routes.route('/generate-custom-trip', methods=['POST', 'OPTIONS'])
 def handle_trip_requests():
@@ -263,9 +264,7 @@ def delete_trip(trip_id):
     except: return jsonify({"error": "fail"}), 500
 
 
-import requests # Σιγουρέψου ότι υπάρχει στην κορυφή
-
-# --- 5. FETCH LOCATION REVIEWS (GOOGLE SEARCH API) ---
+# ---  FETCH LOCATION REVIEWS (GOOGLE SEARCH API) ---
 @routes.route('/get-location-reviews', methods=['POST', 'OPTIONS'])
 def get_location_reviews():
     if request.method == 'OPTIONS': 
@@ -292,7 +291,7 @@ def get_location_reviews():
 
         if response.status_code == 200:
             api_data = response.json()
-            # Στέλνουμε τα αποτελέσματα (συνήθως στο κλειδί 'results' ή 'organic')
+            # Στέλνουμε τα αποτελέσματα 
             results = api_data.get('results', api_data.get('organic', []))
             print(f"Success! Found {len(results)} results.")
             return jsonify({"source": "api", "data": results}), 200
@@ -314,13 +313,13 @@ def get_location_reviews():
     
 @routes.route('/save-sequential-trip', methods=['POST', 'OPTIONS'])
 def save_sequential_trip():
-    # 1. Χειρισμός του Preflight (CORS)
+    
     if request.method == 'OPTIONS': 
         return make_response("", 200)
     
-    # 2. Χειρισμός του κανονικού POST
+   
     try:
-        # Καλούμε το verify χειροκίνητα για αποφυγή CORS issues
+        
         verify_jwt_in_request() 
         current_user = get_jwt_identity()
         
@@ -349,14 +348,12 @@ def save_sequential_trip():
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
     
-from flask_cors import cross_origin  # <--- Σιγουρέψου ότι αυτό είναι εισαγμένο (ή βάλτο στην κορυφή)
+ 
 
 # --- ΑΠΟΣΤΟΛΗ EMAIL ΜΕΣΩ BREVO SMTP (FORM DATA VERSION) ---
 @routes.route('/api/send-trip-email', methods=['POST'])
 def send_trip_email():
-    # Σημείωση: Αφαιρέθηκε το methods=['OPTIONS'], το @cross_origin και τα χειροκίνητα CORS headers.
-    # Το παγκόσμιο CORS(app) από το κεντρικό αρχείο αναλαμβάνει αυτόματα τα πάντα!
-
+ 
     try:
         # Διαβάζουμε τα δεδομένα από το FormData
         user_email = request.form.get('email')
@@ -404,15 +401,6 @@ def send_trip_email():
         username = os.getenv("SMTP_USERNAME")
         password = os.getenv("SMTP_PASSWORD")
 
-        # 🔍 ΠΡΟΣΘΗΚΗ DEBUG PRINTS (Εδώ μπαίνουν, ακριβώς πριν τη σύνδεση!)
-        #print("\n--- [DEBUG] ΕΛΕΓΧΟΣ ΣΤΟΙΧΕΙΩΝ SMTP ---")
-        #print(f"SMTP Server: {smtp_server} | Port: {port}")
-        #print(f"SMTP Username: {username}")
-        #print(f"SMTP Password (Μήκος χαρακτήρων): {len(password) if password else 'None/Δεν βρέθηκε'}")
-        #print(f"Ξεκινάει με xsmtpsib-; {'ΝΑΙ' if password and password.startswith('xsmtpsib-') else 'ΟΧΙ'}")
-        #print("--------------------------------------\n")
-        
-
         # 4. Σύνδεση στον SMTP Server της Brevo και Αποστολή
         server = smtplib.SMTP(smtp_server, port)
         server.starttls()  
@@ -427,17 +415,17 @@ def send_trip_email():
         traceback.print_exc()  
         return jsonify({"error": "Αποτυχία αποστολής email.", "details": str(e)}), 500
     
-    # --- 6. ΣΤΑΤΙΣΤΙΚΑ ΔΗΜΟΦΙΛΩΝ ΠΕΡΙΟΧΩΝ (AGGREGATION) ---
+    # ---  ΣΤΑΤΙΣΤΙΚΑ ΔΗΜΟΦΙΛΩΝ ΠΕΡΙΟΧΩΝ  ---
 @routes.route('/api/search-statistics', methods=['GET'])
 def get_search_statistics():
     try:
-        # 1. Υπολογισμός του συνολικού αριθμού των εγγράφων στη συλλογή trips
+        #  Υπολογισμός του συνολικού αριθμού των εγγράφων στη συλλογή trips
         total_trips = db.trips.count_documents({"location": {"$exists": True, "$ne": None, "$ne": ""}})
         
         if total_trips == 0:
             return jsonify([]), 200
 
-        # 2. Aggregation Pipeline: Ομαδοποίηση ανά τοποθεσία και μέτρημα εμφανίσεων
+        #  Ομαδοποίηση ανά τοποθεσία και μέτρημα εμφανίσεων
         pipeline = [
             # Φιλτράρουμε έγκυρα non-empty locations
             {"$match": {"location": {"$exists": True, "$ne": None, "$ne": ""}}},
@@ -454,7 +442,7 @@ def get_search_statistics():
 
         results = list(db.trips.aggregate(pipeline))
 
-        # 3. Μορφοποίηση των αποτελεσμάτων και υπολογισμός των ποσοστών %
+        #  Μορφοποίηση των αποτελεσμάτων και υπολογισμός των ποσοστών %
         statistics = []
         for item in results:
             location_name = item["_id"]

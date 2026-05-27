@@ -16,37 +16,37 @@ export class TravelService {
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
-  // 1. Λήψη όλων των ταξιδιών του χρήστη (ΙΣΤΟΡΙΚΟ)
+  // Λήψη όλων των ταξιδιών του χρήστη (ΙΣΤΟΡΙΚΟ)
   getMyTrips(): Observable<any> {
     const headers = this.getHeaders();
     return this.http.get(`${this.baseUrl}/get-my-trips`, { headers });
   }
 
-  // 2. Δημιουργία απλού ταξιδιού
+  // Δημιουργία απλού ταξιδιού
   generateTrip(query: string): Observable<any> {
     const headers = this.getHeaders();
     return this.http.post(`${this.baseUrl}/generate-trip`, { query: query }, { headers });
   }
 
-  // 3. Δημιουργία προσαρμοσμένου ταξιδιού
+  // Δημιουργία προσαρμοσμένου ταξιδιού
   generateCustomTrip(data: { location: string, days: number, style: string[], season: string }): Observable<any> {
     const headers = this.getHeaders();
     return this.http.post(`${this.baseUrl}/generate-custom-trip`, data, { headers });
   }
 
-  // 4. Toggle Αγαπημένα
+  //  Toggle Αγαπημένα
   toggleFavorite(tripId: string): Observable<any> {
     const headers = this.getHeaders();
     return this.http.post(`${this.baseUrl}/toggle-favorite`, { trip_id: tripId }, { headers });
   }
 
-  // 5. Προτάσεις κοντινών μερών
+  //Προτάσεις κοντινών μερών
   getNearbyRecommendations(lat: number, lng: number): Observable<any> {
     const headers = this.getHeaders();
     return this.http.post(`${this.baseUrl}/nearby-recommendations`, { lat, lng }, { headers });
   }
 
-  // 6. Λήψη τοποθεσίας Browser
+  //Λήψη τοποθεσίας Browser
   getCurrentLocation(): Promise<{lat: number, lng: number}> {
     return new Promise((resolve, reject) => {
       if (!navigator.geolocation) {
@@ -66,8 +66,7 @@ export class TravelService {
     });
   }
   getCostEstimation(data: any): Observable<any> {
-  const headers = this.getHeaders(); // Χρήση του υπάρχοντος helper για το JWT
-  // Αφαιρούμε το /api/ αφού ο Flask δεν το αναγνωρίζει στο blueprint
+  const headers = this.getHeaders();  
   return this.http.post(`${this.baseUrl}/calculate-costs`, data, { headers });
 }
   deleteTrip(tripId: string) {
@@ -76,23 +75,21 @@ export class TravelService {
     headers: { 'Authorization': `Bearer ${token}` }
   });
 }
-  // Στο τέλος του TravelService class
+
   getLocationReviews(location: string): Observable<any> {
-    const headers = this.getHeaders(); // Προσθήκη JWT αν χρειάζεται
+    const headers = this.getHeaders(); 
     return this.http.post(`${this.baseUrl}/get-location-reviews`, { location }, { headers });
   }
 
-  // 7. Αποθήκευση Sequential Διαδρομής (MyCustomTrip)
+  // Αποθήκευση Sequential Διαδρομής (MyCustomTrip)
 saveSequentialTrip(tripData: any): Observable<any> {
   const headers = this.getHeaders();
   return this.http.post(`${this.baseUrl}/save-sequential-trip`, tripData, { headers });
 }
 
 
-// Μέσα στο travel.service.ts
+
 sendTripEmail(formData: FormData): Observable<any> {
-    // Στέλνουμε το formData αυτούσιο. 
-    // Ο browser θα ρυθμίσει αυτόματα το Content-Type σε multipart/form-data.
     return this.http.post('http://localhost:5000/api/send-trip-email', formData);
   }
 

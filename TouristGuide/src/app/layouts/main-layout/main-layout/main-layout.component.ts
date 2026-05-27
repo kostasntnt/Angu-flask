@@ -13,7 +13,7 @@ export class MainLayoutComponent {
 
   constructor(private router: Router) {}
 
-  // Η συνάρτηση για το hamburger menu (κινητά)
+  // Η συνάρτηση για το menu (κινητά)
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }

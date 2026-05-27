@@ -9,7 +9,7 @@ TouristPy/.venv/
 TouristPy/__pycache__/
 TouristPy/*.pyc
 
-# Secrets (Το πιο σημαντικό)
+# Secrets 
 .env
 **/ .env
 TouristPy/.env

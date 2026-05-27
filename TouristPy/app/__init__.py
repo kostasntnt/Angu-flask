@@ -15,7 +15,7 @@ def create_app():
     app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50 Megabytes όριο
     
 # Πλήρης ρύθμιση CORS
-    # Το κλειδί εδώ είναι το 'expose_headers' ώστε η Angular να μπορεί να διαβάσει το Token αν χρειαστεί
+   
     CORS(app, 
          resources={r"/*": {"origins": "http://localhost:4200"}}, 
          supports_credentials=True,
@@ -23,7 +23,7 @@ def create_app():
          methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
          expose_headers=["Authorization"])
 
-    # Απενεργοποίηση του strict_slashes για να μην έχουμε 301/404 redirects που σπάνε το CORS
+  
     app.url_map.strict_slashes = False
 
     # JWT Ρύθμιση

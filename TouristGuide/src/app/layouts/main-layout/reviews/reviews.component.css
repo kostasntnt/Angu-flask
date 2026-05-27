@@ -11,7 +11,7 @@
     padding: 15px;
 }
 
-/* Για να μην χαλάει στο κινητό όμως: */
+
 @media (max-width: 991px) {
     .col-lg-6 {
         flex: 0 0 100%;

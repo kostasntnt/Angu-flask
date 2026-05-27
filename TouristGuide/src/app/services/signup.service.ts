@@ -7,8 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class SignupService {
 
-  // Χρησιμοποιούμε το localhost:5000 για συνέπεια με τα άλλα services
-  private apiUrl = 'http://localhost:5000/signup';
+   private apiUrl = 'http://localhost:5000/signup';
 
   constructor(private http: HttpClient) { }
 
@@ -19,8 +18,7 @@ export class SignupService {
   signup(userData: any): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     
-    // Προσθήκη :any στο error handling του component που καλεί αυτή τη μέθοδο
-    // θα λύσει το TS7006 σφάλμα που είχαμε πριν
+
     return this.http.post(this.apiUrl, userData, { headers });
   }
   

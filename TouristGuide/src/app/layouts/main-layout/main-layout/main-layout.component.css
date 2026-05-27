@@ -7,7 +7,7 @@
     width: 100%;
     position: sticky;
     top: 0;
-    background: white; /* Άλλαξέ το από transparent για να μην μπλέκονται τα γράμματα */
+    background: white;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(10px);
     z-index: 999;
@@ -84,7 +84,7 @@
     border: none !important;
 }
 
-/* Media Queries (τα αφήνεις εδώ για το mobile menu) */
+/* Media Queries  */
 @media (max-width: 880px) {
     .navbar-menu {
         display: none !important;
@@ -97,9 +97,11 @@
         background: white;
         padding: 5rem 1.5rem;
     }
+
     .navbar-menu.active {
         display: flex !important;
     }
+
     .navbar-toggle {
         display: block;
     }
@@ -114,7 +116,7 @@
 
 /* Το κουτί του μενού */
 .user-menu {
-    position: relative; /* Σημαντικό για να τοποθετηθεί το dropdown σωστά */
+    position: relative;
     cursor: pointer;
     display: inline-block;
     padding: 10px;
@@ -123,7 +125,7 @@
 /* Το dropdown μενού */
 .dropdownmenu {
     position: absolute;
-    top: 100%; /* Ακριβώς κάτω από το εικονίδιο */
+    top: 100%;
     right: 0;
     background: #ffffff;
     border: 1px solid #ddd;

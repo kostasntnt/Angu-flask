@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http'; // 🆕 Απαραίτητο για το API
-import { ChartConfiguration, ChartData, ChartType } from 'chart.js'; // 🆕 Για το TypeScript typing του Chart
-import { BaseChartDirective } from 'ng2-charts'; // 🆕 1. Εισαγωγή του Directive
+import { HttpClient } from '@angular/common/http'; 
+import { ChartConfiguration, ChartData, ChartType } from 'chart.js'; 
+import { BaseChartDirective } from 'ng2-charts'; 
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
@@ -27,23 +27,23 @@ items = [
   {title:'Dedomena' , content: 'καλως ήρθατε'}
 ]
 
-// 🆕 1. Πρόσθεσε τη μεταβλητή για το αν είναι ανοιχτά τα στατιστικά
+//  ανοιχτά στατιστικά
   showStatistics = false;
 
-  // 🆕 2. Πρόσθεσε τις ρυθμίσεις και τη δομή των δεδομένων για την πίτα
+  // δεδομενα για την πίτα
   public pieChartOptions: ChartConfiguration['options'] = {
     responsive: true,
     plugins: {
       legend: {
         display: true,
-        position: 'right' // Εμφάνιση ονομάτων στα δεξιά της πίτας
+        position: 'right' 
       },
         tooltip: {
         callbacks: {
           label: function(context) {
             const label = context.label || '';
             const value = context.parsed; // Το νούμερο/ποσοστό
-            return ` ${label}: ${value}%`; // Επιστρέφει π.χ. "Αθήνα: 25%"
+            return ` ${label}: ${value}%`; 
           }
         }
       }
@@ -57,9 +57,9 @@ items = [
   
   public pieChartType: ChartType = 'pie';
 
-  // 🆕 3. Βάλε τον HttpClient στον constructor σου
+ 
   constructor(private http: HttpClient) {}
-  // 🆕 4. Πρόσθεσε τη συνάρτηση που ανοιγοκλείνει τα στατιστικά και καλεί το Flask
+  //  συνάρτηση που ανοιγοκλείνει τα στατιστικά και καλεί το Flask
   toggleStatistics() {
     this.showStatistics = !this.showStatistics;
     
@@ -69,7 +69,7 @@ items = [
     }
   }
 
-  // 🆕 5. Πρόσθεσε τη συνάρτηση που φέρνει τα δεδομένα από το Flask
+  // συνάρτηση που φέρνει τα δεδομένα από το Flask
   loadSearchStatistics() {
     this.http.get<any[]>('http://localhost:5000/api/search-statistics').subscribe({
       next: (response) => {
